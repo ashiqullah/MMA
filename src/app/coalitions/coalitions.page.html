@@ -1,0 +1,102 @@
+<ion-header>
+  <ion-toolbar>
+        <ion-buttons slot="start">
+                <ion-menu-button menu="logout" autoHide="false"></ion-menu-button>
+               
+              </ion-buttons>
+    <ion-title>{{ 'COALITION' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+        <div text-center>
+                <ion-spinner *ngIf="loading"></ion-spinner>
+              </div>
+  <ion-list>
+    
+
+     
+
+
+    <ion-card *ngFor="let colation of coalitions">
+   <div *ngFor="let leader of colation.leaders">
+    
+        <ion-img *ngIf="leader.position=='Chair Person'" src="{{leader.picture?(ServerUrl+'/coalition_leaders/'+leader.picture):(ServerUrl+nullresouceimage)}}"></ion-img>
+     <p *ngIf="leader.position=='Chair Person' && translate.currentLang=='en'" text-center><strong>{{leader.name}}</strong></p>
+     <p *ngIf="leader.position=='Chair Person'  && translate.currentLang=='fa'" text-center><strong>{{leader.name_da}}</strong></p>
+     <p *ngIf="leader.position=='Chair Person' && translate.currentLang=='ps'" text-center><strong>{{leader.name_ps}}</strong></p>
+     <p *ngIf="leader.position=='Chair Person'" text-center><strong>{{leader.position}}</strong></p>
+<div *ngIf="leader.position=='Chair Person' && translate.currentLang=='en'" text-right class="coalitioncontent" padding  [innerHTML]="leader.biography"></div>
+<div *ngIf="leader.position=='Chair Person' && translate.currentLang=='fa'" text-right class="coalitioncontent" padding  [innerHTML]="leader.biography_da"></div>
+<div *ngIf="leader.position=='Chair Person' && translate.currentLang=='ps'" text-right class="coalitioncontent" padding  [innerHTML]="leader.biography_ps"></div>
+    
+      </div>
+        <ion-card-header>
+          <!-- <ion-card-subtitle>Posted By: {{resouce.name}} at {{resouce.created_at}}</ion-card-subtitle> -->
+            <ion-card-subtitle > <br> </ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+            <!-- <p *ngIf="currenlanguage=='da'">
+        {{article.da_title}}
+    </p>
+    <p *ngIf="currenlanguage=='en'">
+          {{article.en_title}}
+      </p>
+      <p *ngIf="currenlanguage=='ps'">
+            {{article.ps_title}}
+        </p> -->
+            <!--  <p>
+        {{resouce.title}}
+    </p>  -->
+            <!-- <accordion title="Your Title"> Your Content Here </accordion>
+                 <accordion title="Your Title"> Your Content Here </accordion>
+
+    -->
+            <p text-center><strong>{{colation.en_title}}</strong> </p>
+
+
+            <!--<ion-grid>
+                <ion-row>
+
+                    <ion-col size="6">
+                        <ion-button class="lowercase" slot="start" fill="outline" (click)="openCoalitionDetails(colation)"> Coalition Info</ion-button>
+
+                    </ion-col>
+                    <ion-col size="6">
+                        <ion-button class="lowercase" slot="end" fill="outline" (click)="openCoalitionDeputies(colation.leaders)"> Deputies</ion-button>
+
+                    </ion-col>
+                </ion-row>
+            </ion-grid>-->
+
+
+       <!--      <ion-button class="lowercase" slot="start" fill="outline" (click)="openCoalitionDetails(colation)"> Coalition Info</ion-button>
+            <ion-button class="lowercase" slot="end" fill="outline" (click)="openCoalitionDeputies(colation.leaders)"> Deputies</ion-button>
+ -->
+            <ion-grid>
+                <ion-row no-padding>
+                    <ion-col no-padding>
+                        <ion-button no-padding fill="outline" class="upperrow" (click)="openCoalitionDetails(colation)" color="primary"  class="lowercase"  size="small" expand='block'>
+                   
+                            Coalition Info
+                        </ion-button>
+                    </ion-col>
+                    <ion-col no-padding>
+                        <ion-button no-padding fill="outline" class="upperrow"  (click)="openCoalitionDeputies(colation.leaders)"  color="primary"  class="lowercase"  size="small" expand='block'>
+                            Deputies
+                     
+                     </ion-button>
+        
+                      
+                    </ion-col>
+                   
+                    
+                  </ion-row>
+                  </ion-grid>
+
+        </ion-card-content>
+      </ion-card>
+      </ion-list>
+      
+      
+</ion-content>

@@ -1,3 +1,42 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <!-- <ion-menu contentId="content1" menuId="forumcategories" id="forumcategories" side="start">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>catagories</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+ 
+        <ion-item (click)="logout()">Logout</ion-item>
+        <ion-item (click)="logout()">Change Password</ion-item>
+
+      </ion-list>
+    </ion-content>
+  </ion-menu> -->
+
+  <ion-menu contentId="content1" menuId="logout" id="logout" side="start">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Main menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-card *ngIf="user" style="position:relative;text-align: center;margin: 0px!important;width:100%!important" >
+        <img src="{{user.image?(ServerUrl+user.image):((user.gender==1?Maleimage:Femaleimage))}}">
+        <div style="position: absolute;top:70%;font-size: 2.0 em;font-weight: bold;color:#ffff;width: 100%;" class="card-title">{{user.name}}</div>
+        <div style="position: absolute;top:80%;font-size: 1.0 em;color:#ffff;width: 100%;" class="card-subtitle">{{user.email}}<br>{{user.mobile}}</div>
+      </ion-card>
+      <ion-list>
+          <ion-item  [routerLink]="['/profile']"> Profile </ion-item>   
+               <ion-item [routerLink]="['/configuration']">Settings</ion-item>
+               <!-- <ion-button fill="clear" slot="end" [routerLink]="['/configuration']"><ion-icon color="energized"  name='cog' ></ion-icon></ion-button> -->
+        <ion-item [routerLink]="['/changepassword']">Change Password</ion-item>
+        <ion-item (click)="logout()">Logout</ion-item>
+
+
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet   id="content1"></ion-router-outlet>
 </ion-app>

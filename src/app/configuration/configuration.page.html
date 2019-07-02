@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button defaultHref="/tabs/tab3"></ion-back-button>
+          </ion-buttons>
+          <ion-title>Configuration</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list no-lines padding>
+        <ion-item>
+          <ion-label> {{ 'SELECTLANGUAGE' | translate }}</ion-label>
+          <ion-select [(ngModel)]="languageSelected" (ionChange)='setLanguage()' [okText]="'OK' | translate" [cancelText]="'CANCEL' | translate">
+            <!-- <ion-option *ngFor="let item of languages" [value]="item.code">{{item.name}}</ion-option> -->
+            <ion-select-option *ngFor="let item of languages" [value]="item.code">{{item.name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+
+</ion-content>

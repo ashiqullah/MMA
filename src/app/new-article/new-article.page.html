@@ -1,0 +1,33 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+            </ion-buttons>
+      <ion-title>{{catagoryName}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  
+  
+  <ion-content padding>
+   
+    <form [formGroup]="form">
+  
+        <ion-item>
+            <ion-input formControlName="title" placeholder="Title"></ion-input>
+          </ion-item>
+     
+      <!-- <ion-item style="margin-top:10px;margin-bottom:10px;"> -->
+        <!-- <ion-textarea row="10" type="string" formControlName="description" placeholder="Description"></ion-textarea> -->
+        <ckeditor [editor]="Editor" formControlName="description" [config]="{ toolbar: ['|', 'bold', 'italic','bulletedList', 'numberedList','imageUpload'] }"  (ready)="onReady($event)"></ckeditor>
+      
+      <!-- </ion-item> -->
+      <ion-item>
+        <input type="file" class="custom-file-input" formControlName="file" (change)="onFileChange($event)">
+      </ion-item>
+    
+      <ion-button  expand="block" box-shadow (click)="postForm()" [disabled]="!form.valid" >
+        Submit
+      </ion-button>
+    </form>
+  </ion-content>

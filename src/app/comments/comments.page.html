@@ -1,0 +1,87 @@
+
+
+<ion-header>
+    <ion-toolbar >
+      <ion-title>{{ 'COMMENTS' | translate }}</ion-title>
+      <ion-buttons slot="secondary">
+          <ion-button (click)="dismiss()">
+            <ion-icon slot="start" name="close"></ion-icon>
+            
+          </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+
+
+<ion-content >
+
+  <ion-list *ngIf="comments">
+    <ion-item  *ngFor="let comment of comments; let i = index">
+
+          
+        <ion-card style="width: 100%;" *ngIf="comment" >        <ion-item>
+            <ion-avatar  slot="start">
+              <img src="{{comment.user.image?(ServerUrl+comment.user.image):(comment.user.gender==1?maleimage:femaleimage)}}">
+            </ion-avatar>
+            <ion-label>{{comment.user.name}}
+                <p style="font-size: 12px;" text-left>{{comment.created_at}}</p></ion-label>          
+
+
+            <ion-buttons fill="clear" *ngIf="comment.user_id==userID || userType==1" right>
+                <ion-button ion-button fill="clear" (click)="commentActionSheet(comment.id,i,comment.reply)"  icon-only >
+                  <ion-icon color="dark" name="more"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+
+          </ion-item>
+          <ion-card-content>
+              <div  class="ion-no-padding ion-text-wrap"   [innerHTML]="comment.reply"></div>
+
+          </ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col><ion-button fill="clear" class="lowercase" color="primary" (click)="CommentLikeClick(comment.id,i)"   size="small" icon-start>
+                  <ion-icon color="energized"  name='thumbs-up' ></ion-icon>
+                  {{comment.likes.length}} {{ 'LIKES' | translate }}
+                </ion-button></ion-col>
+              <ion-col><ion-button class="lowercase" fill="clear" color="primary" (click)="commentreplies(comment.id)"  size="small" icon-start>
+                  <ion-icon name='repeat'></ion-icon>
+                  {{comment.replies.length}}  {{ 'REPLIES' | translate }}
+                </ion-button></ion-col>
+            </ion-row>
+          </ion-grid>
+         
+        </ion-card>
+    </ion-item>
+   
+  </ion-list>
+
+  
+  <ion-infinite-scroll (ionInfinite)="loadMoreComments($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
+<ion-footer >
+  <ion-grid>
+    <ion-row>
+        <!--<ion-col col-12>
+       <button ion-button icon-only color="custom" (click)="imageShare()">
+          <ion-icon name='camera'></ion-icon>
+        </button>
+      </ion-col>-->
+      <ion-col size="10">
+        <ion-textarea  placeholder="Enter your comment" class="ion-no-padding" [(ngModel)]="commentText"></ion-textarea>
+
+      </ion-col>
+      <ion-col size="2">
+        <ion-button slots="icon-only"   color="primary" (click)="postComment()" [disabled]="!commentText">
+          <ion-icon name='send'></ion-icon>
+
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-footer>

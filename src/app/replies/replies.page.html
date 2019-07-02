@@ -1,0 +1,78 @@
+<ion-header>
+    <ion-toolbar >
+      <ion-title> {{ 'REPLIES' | translate }}</ion-title>
+      <ion-buttons slot="secondary">
+          <ion-button (click)="dismiss()">
+            <ion-icon slot="start" name="close"></ion-icon>
+            
+          </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content>
+
+  <ion-list *ngIf="replies">
+    <ion-item  *ngFor="let commentreplies of replies; let i = index">
+
+    <ion-card slot="start" style="width: 100%;" >        <ion-item>
+        <ion-avatar  slot="start">
+        <img src="{{commentreplies.user.image!=null?(ServerUrl+commentreplies.user.image):(commentreplies.user.gender==1?maleimage:femaleimage)}}">
+         
+        </ion-avatar>
+        <ion-label>{{commentreplies.user.name}}
+            <p style="font-size: 12px;" text-left>{{commentreplies.reply_date}}</p></ion-label>          
+
+
+        <ion-buttons fill="clear" right>
+            <ion-button  fill="clear" (click)="replyActionSheet(commentreplies.id,i,commentreplies.content)"  icon-only >
+              <ion-icon color="dark" name="more"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+
+      </ion-item>
+      <ion-card-content>
+          <div class="ion-no-padding ion-text-wrap"   [innerHTML]="commentreplies.content"></div>
+
+      </ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+              <ion-button fill="clear" class="lowercase"  color="primary" (click)="ReplyLikeClick(commentreplies.id,i)"   size="small" icon-start>
+                  <ion-icon color="energized"  name='thumbs-up' ></ion-icon>
+                  {{commentreplies.likes.length}} {{ 'LIKES' | translate }}
+                </ion-button>
+          </ion-col>
+          
+        </ion-row>
+      </ion-grid>
+      </ion-card> 
+ 
+ 
+    </ion-item>
+    </ion-list>
+
+    
+</ion-content>
+<ion-footer >
+  <ion-grid>
+    <ion-row>
+        <!--<ion-col col-12>
+       <button ion-button icon-only color="custom" (click)="imageShare()">
+          <ion-icon name='camera'></ion-icon>
+        </button>
+      </ion-col>-->
+      <ion-col size="10">
+        <ion-textarea  placeholder="Enter your Reply" class="ion-no-padding" [(ngModel)]="replyText"></ion-textarea>
+
+      </ion-col>
+      <ion-col size="2">
+        <ion-button slots="icon-only"   color="primary" (click)="postReply()" [disabled]="!replyText">
+          <ion-icon name='send'></ion-icon>
+
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-footer>

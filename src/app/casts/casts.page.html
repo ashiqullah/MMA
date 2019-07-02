@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar>
+        <ion-buttons slot="start">
+                <ion-menu-button menu="logout" autoHide="false"></ion-menu-button>
+               
+              </ion-buttons>
+    <ion-title>{{ 'VIDEOCASTING' | translate }}</ion-title>
+    <!-- [routerLink]="['/video-upload']" -->
+    
+
+    <ion-button fill="clear" slot="end" (click)="presentActionSheet()"  > <ion-icon color="energized"  name='add' ></ion-icon></ion-button>
+    <!-- <ion-buttons slot="start">
+      <ion-menu-button menu="logout" autoHide="false"></ion-menu-button>
+    </ion-buttons> -->
+  </ion-toolbar>
+</ion-header>
+<!-- (click)="openVideoPage(item.url)" -->
+<!--</ion-item> [routerLink]="['/','video-details',item.id]"--> 
+<ion-content>
+    <ion-searchbar
+    [(ngModel)]="searchTerm"
+    (ionChange)="setFilteredItems()" placeholder="{{ 'SEARCH' | translate }}"
+  ></ion-searchbar>
+
+    
+ 
+  <ion-virtual-scroll [items]="displaycasts">
+      <ion-item *virtualItem="let item" [routerLink]="['/video-details']" [queryParams]="{videoid:item.id}">
+          <ion-avatar slot="start">
+              <img src="{{item.user.image?(ServerUrl+item.user.image):(item.user.gender==1?Maleimage:Femaleimage)}}">
+          </ion-avatar>
+
+          <ion-label text-wrap>
+              <h3>{{ item.title }}</h3>
+              <time> {{ item.created_at }}</time>
+          </ion-label>
+
+          <ion-icon slot="end" name="videocam"></ion-icon>
+      </ion-item>
+    </ion-virtual-scroll>
+
+
+  <!--   <ion-list>
+
+       
+
+        <ion-item button *ngFor="let item of Casts" [routerLink]="['/video-details']" [queryParams]="{videoid:item.id}">
+            <ion-avatar slot="start">
+                <img src="{{item.user.image?(ServerUrl+item.user.image):(item.user.gender==1?Maleimage:Femaleimage)}}">
+            </ion-avatar>
+
+            <ion-label text-wrap>
+                <h3>{{ item.title }}</h3>
+                <time> {{ item.created_at }}</time>
+            </ion-label>
+
+            <ion-icon slot="end" name="videocam"></ion-icon>
+            
+
+        </ion-item>
+
+    </ion-list> -->
+
+
+<!-- 
+    <ion-infinite-scroll (ionInfinite)="loadMoreVideos($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll> -->
+</ion-content>

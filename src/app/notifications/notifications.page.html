@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-menu-button menu="logout" autoHide="false"></ion-menu-button>
+         
+        </ion-buttons>
+
+    <ion-title>{{ 'NOTIFICATIONS' | translate }}</ion-title>
+    <ion-button fill="clear" slot="end" (click)="done()"><ion-icon color="energized"  name='trash' ></ion-icon></ion-button>
+    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="notifications-content">
+   <!--  <ion-item  *ngFor="let item of notifcations; let i = index"  (click)="itemclicked(item.id,item.entity_type,item.entity_id,i)" detail>
+     <p style="font-size: 12px;">{{item.message}}</p> 
+      </ion-item> -->
+
+      <ion-item *ngFor="let item of notifcations; let i = index"  (click)="itemclicked(item.id,item.entity_type,item.entity_id,i)" detail>
+        <ion-avatar slot="start">
+            <img src="{{item.Image?(ServerUrl+item.Image):(item.user.gender==1?Maleimage:Femaleimage)}}">
+        </ion-avatar>
+
+        <ion-label text-wrap>
+            <h3>{{ item.username }}</h3>
+            <p style="font-size: 12px;">{{item.message}} </p>
+            <ion-note item-right>{{item.created_at}}</ion-note>
+        </ion-label>
+
+    </ion-item>
+
+     <!--  <ion-list *ngIf="notifcations">
+        <ion-item  *ngFor="let item of notifcations" (click)="itemclicked(item.id,item.entity_type,item.entity_id,i)" detail>
+    
+          <ion-avatar>
+            <img src="{{item.Image?(ServerUrl+item.Image):(item.user.gender==1?Maleimage:Femaleimage)}}">
+          </ion-avatar>
+          <h2>{{item.username}}</h2>
+          <p style="font-size: 12px;">{{item.message}} </p>
+          <ion-note item-right>{{item.created_at}}</ion-note>
+        </ion-item>
+      
+      </ion-list> -->
+
+     
+</ion-content>

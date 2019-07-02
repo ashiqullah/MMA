@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button defaultHref="/home"></ion-back-button>
+          </ion-buttons>
+    <ion-title>news</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-row *ngIf="art" class="white-bg" style="padding-bottom: 0px;">
+        <ion-col>
+            <img src="{{ServerUrl+art.image}}" style="width: 100%">
+        </ion-col>
+    </ion-row>
+    <ion-row *ngIf="art" class="white-bg" padding >
+        <ion-col>
+            <p class="category">Posted By : {{art.username}}</p>
+            <h5 *ngIf="currenlanguage=='en'" class="title">{{art.en_title}}</h5>
+            <h5 *ngIf="currenlanguage=='fa'" class="title">{{art.da_title}}</h5>
+            <h5 *ngIf="currenlanguage=='ps'" class="title">{{art.ps_title}}</h5>
+            <p class="date">Created At: {{art.created_at}}</p>
+        </ion-col>
+    </ion-row>
+    <ion-row class="white-bg" *ngIf="art" style="padding-top: 0px;" padding >
+        <ion-col>
+
+            <p *ngIf="currenlanguage=='da'" [innerHTML]="art.da_content">
+               
+            </p>
+            <p *ngIf="currenlanguage=='en'" [innerHTML]="art.en_content">
+                  
+              </p>
+              <p *ngIf="currenlanguage=='ps'" [innerHTML]="art.ps_content">
+                    
+                </p>
+            
+        </ion-col>
+
+    </ion-row>
+</ion-content>

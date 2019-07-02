@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-menu-button menu="logout" autoHide="false"></ion-menu-button>
+         
+        </ion-buttons>
+    <ion-title>{{ 'RESOURCES' | translate }}</ion-title>
+    <ion-button fill="clear" slot="end" (click)="doFilter()" ><ion-icon color="energized"  name='funnel' ></ion-icon></ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div text-center>
+        <ion-spinner *ngIf="loading"></ion-spinner>
+      </div>
+  <ion-select style="display: none" #sectionSelect (ionChange)='changeCategory()' [(ngModel)]="CategorySelected">
+    <ion-select-option *ngFor="let category of categories" [value]="category.slug">{{category.en_title}}</ion-select-option>
+  </ion-select>
+  <div text-center>
+  <div *ngIf="Resouces.length<=0">No Resources in this catagory</div>
+</div>
+    <ion-list>
+    
+     
+     
+
+
+      <ion-card *ngFor="let resouce of Resouces">
+       
+          <ion-img src="{{resouce.image?(ServerUrl+resouce.image):(ServerUrl+nullresouceimage)}}"></ion-img>
+
+          <ion-card-header>
+            <ion-card-subtitle>Posted By: {{resouce.name}} at {{resouce.created_at}}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <!-- <p *ngIf="currenlanguage=='da'">
+                {{article.da_title}}
+            </p>
+            <p *ngIf="currenlanguage=='en'">
+                  {{article.en_title}}
+              </p>
+              <p *ngIf="currenlanguage=='ps'">
+                    {{article.ps_title}}
+                </p> -->
+                <p>
+                    {{resouce.title}}
+                </p> 
+            <ion-button *ngIf="resouce.file" ion-button fill="outline" (click)="openWithSystemBrowser(ServerUrl+resouce.file,'Demo PDF')" >View File</ion-button>
+            <ion-button *ngIf="resouce.link" ion-button fill="outline" (click)="openWithCordovaBrowser(resouce.link,'Demo PDF')" >View link </ion-button>
+
+           
+           
+          </ion-card-content>
+        </ion-card>
+        </ion-list>
+
+
+
+</ion-content>
+

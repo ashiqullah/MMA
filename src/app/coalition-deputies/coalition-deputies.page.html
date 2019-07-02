@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="end">
+          <ion-button (click)="dismiss()">
+            <ion-icon slot="end" name="close"></ion-icon>          
+          </ion-button>
+        </ion-buttons>
+    <ion-title>coalition-deputies</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    
+           
+           
+        <ion-card *ngFor="let deputy of CoalitionDeputies">
+            <ion-img src="{{ServerUrl+deputy.picture}}"></ion-img>
+            <ion-card-header>
+              <ion-card-subtitle text-center> <ion-label>{{deputy.name}}</ion-label><br> <br><ion-label>{{deputy.position}}</ion-label>  </ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+                <div [innerHTML]="deputy.biography"></div>
+             
+        
+            </ion-card-content>
+          </ion-card>
+
+        
+
+</ion-content>

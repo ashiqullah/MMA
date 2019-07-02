@@ -1,0 +1,198 @@
+<ion-header>
+  <ion-toolbar >
+    <ion-title>forum Article</ion-title>
+    <ion-buttons slot="secondary">
+        <ion-button (click)="dismiss()">
+          <ion-icon slot="start" name="close"></ion-icon>
+          
+        </ion-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  
+    <ion-spinner *ngIf="loading"></ion-spinner>
+  
+
+    
+    <ion-card *ngIf="artical">
+
+      <ion-item >
+          
+        <ion-avatar   slot="start">
+          <img src="{{artical.user.image!=null?(ServerUrl+artical.user.image):(artical.user.gender==1?maleimage:femaleimage)}}">
+        </ion-avatar>
+        <ion-label>{{artical.user.name}}
+         <p style="font-size: 12px;" text-left>{{artical.created_at | timeAgo}}</p></ion-label>
+         <ion-buttons fill="clear"  left>
+            <ion-button ion-button fill="clear">
+              <ion-icon color="dark" name="more"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        
+      </ion-item>
+
+
+      <ion-card-content>
+          <p color="primary" class="forumtitle" >{{artical.title}}</p>
+
+        <div [innerHTML]="artical.body"></div>
+      </ion-card-content>
+<ion-grid>
+      <ion-row no-padding>
+        <ion-col no-padding>
+          <ion-button no-padding  color="primary" strong="true" strong= "{{1==2?'true':'false'}}" class="lowercase" (click)="LikeCliked(artical.id)" fill="clear" size="small" expand='block'>
+            <ion-icon color="energized"  name='thumbs-up' ></ion-icon>
+            {{artical.likes.length}} Likes
+          </ion-button>
+        </ion-col>
+        <ion-col no-padding>
+          <ion-button no-padding  fill="clear" color="primary" class="lowercase"  size="small"  expand='block'>
+            <ion-icon name='text'></ion-icon>
+            {{artical.comments.length}} Comments
+          </ion-button>
+        </ion-col>
+        <ion-col no-padding>
+        
+          <ion-button no-padding fill="clear" class="lowercase"  color="primary" size="small"  expand='block'>
+            <ion-icon name='repeat'></ion-icon>
+            {{artical.replies.length}} Replies
+          </ion-button>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+      <ion-row>
+
+        <div class="tab-content"  style="padding: 0.3em">
+          <ion-card-content>
+            <ion-item>
+              <ion-input type="text"  [(ngModel)]="commentText"  placeholder="Your Comment"></ion-input>
+              <ion-button (click)="postComment()"  class="lowercase" clear large item-right color="primary"><ion-icon name='send'></ion-icon></ion-button>
+
+            </ion-item>
+          </ion-card-content>
+          <div class="tab-pane active">
+
+
+            <ul *ngIf="artical.comments">
+            <li *ngFor="let comment of artical.comments;let c = index" class="media countable" style="margin-top: 30px;" >
+         
+        <ion-card style="display: flex;
+        flex-direction: column;
+        width: 100% !important;
+        margin: 0 !important;">        <ion-item>
+            <ion-avatar  slot="start">
+              <img src="{{comment.user.image!=null?(ServerUrl+comment.user.image):(comment.user.gender==1?maleimage:femaleimage)}}">
+            </ion-avatar>
+            <ion-label>{{comment.user.name}}
+                <p style="font-size: 12px;" text-left>{{comment.created_at | timeAgo}}</p></ion-label>          
+
+
+            <ion-buttons fill="clear" right>
+                <ion-button ion-button fill="clear" (click)="commentActionSheet(comment.id,c,comment.reply)"  icon-only >
+                  <ion-icon color="dark" name="more"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+
+          </ion-item>
+          <ion-card-content>
+              <div  class="ion-no-padding ion-text-wrap" style="width:250px ;"  [innerHTML]="comment.reply"></div>
+
+          </ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col><ion-button fill="clear" class="lowercase" color="primary" (click)="CommentLikeClick(comment.id,c)"   size="small" icon-start>
+                  <ion-icon color="energized"  name='thumbs-up' ></ion-icon>
+                  {{comment.likes.length}} Likes
+                </ion-button></ion-col>
+              <ion-col><ion-button class="lowercase" fill="clear" color="primary"   size="small" icon-start>
+                  <ion-icon name='repeat'></ion-icon>
+                  {{comment.replies.length}} Replies
+                </ion-button></ion-col>
+            </ion-row>
+          </ion-grid>
+          <div id="commentreplyid{{comment.id}}" class="collapse">
+              <hr>
+              
+              
+               <ion-item>
+                <ion-input type="text" id="comentreplytext{{comment.id}}" placeholder="Reply to this comment"></ion-input>
+                <ion-button color="primary" (click)="UserReply(comment.id,c)" ion-button clear small item-right><ion-icon name='send'></ion-icon></ion-button>
+               </ion-item>
+             
+              <hr>
+              <ul style="display: inline;margin-right: -30px;  float:right; " class="media-list">
+                <li  *ngFor="let commentreplies of comment.replies;let r=index" class="media media-replied">
+                 
+
+
+                    <ion-card style="width: 85%;" slot="start" >        <ion-item>
+                        <ion-avatar  slot="start">
+                        <img src="{{commentreplies.user.image!=null?(ServerUrl+commentreplies.user.image):(commentreplies.user.gender==1?maleimage:femaleimage)}}">
+                         
+                        </ion-avatar>
+                        <ion-label>{{commentreplies.user.name}}
+                            <p style="font-size: 12px;" text-left>{{commentreplies.reply_date | timeAgo}}</p></ion-label>          
+            
+            
+                        <ion-buttons fill="clear" right>
+                            <ion-button  fill="clear"  (click)="replyActionSheet(commentreplies.id,c,r,commentreplies.content)" icon-only >
+                              <ion-icon color="dark" name="more"></ion-icon>
+                            </ion-button>
+                          </ion-buttons>
+            
+                      </ion-item>
+                      <ion-card-content>
+                          <div class="ion-no-padding ion-text-wrap" style="width:180px ;"   [innerHTML]="commentreplies.content"></div>
+            
+                      </ion-card-content>
+                      <ion-grid>
+                        <ion-row>
+                          <ion-col>
+                              <ion-button fill="clear" class="lowercase"  color="primary" (click)="ReplyLikeClick(commentreplies.id,r,c)"   size="small" icon-start>
+                                  <ion-icon color="energized"  name='thumbs-up' ></ion-icon>
+                                  {{commentreplies.likes.length}} Likes
+                                </ion-button>
+                          </ion-col>
+                          
+                        </ion-row>
+                      </ion-grid>
+                      </ion-card>
+
+
+
+                 
+                 
+                 
+                </li>
+              </ul>
+              
+                   </div>
+        </ion-card>
+
+<div class="media-body">
+<div class="well well-sm">
+
+  
+
+</div>
+    </div>
+            </li>
+
+        </ul>
+
+
+      </div>
+      </div>
+
+
+      </ion-row>
+
+    </ion-card>
+
+
+
+
+ 
+</ion-content>

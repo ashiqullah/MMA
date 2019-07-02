@@ -1,0 +1,32 @@
+{
+	"HELLO": "Hello",
+	"LOVE" : "Love",
+	"FORUM":"Forum",
+	"OK":"Ok",
+	"VIDEOCASTING":"Video Casting",
+	"HOMEPAGE":"Home Page",
+	"COMMENT":"Comment:",
+	"EDIT":"Edit",
+	"DELETE":"Delete",
+	"CANCEL":"Cancel",
+	"NOTIFICATIONS":"Notifications",
+	"CLEARALLNOTIFICATIONS":"Are you sure you want to Clear all Notifications ?",
+	"ALERT":"Alert",
+	"YES":"Yes",
+	"LIKES":"Likes",
+	"COMMENTS":"Comments",
+	"REPLIES":"Replies",
+	"READMORE":"Read More",
+	"EVENT":"Event",
+	"NEWS":"News",
+	"RECORDVIDEO":"Record Video",
+	"VIDEOUPLOAD":"Upload Video",
+	"SELECTLANGUAGE":"--Select Language--",
+	"COALITION":"Coalition",
+	"RESOURCES":"Resources",
+	"SEARCH":"Search"
+	
+
+
+
+}

@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+      
+    <ion-title>Coalition Details</ion-title>
+    <ion-buttons slot="end">
+        <ion-button (click)="dismiss()">
+          <ion-icon slot="end" name="close"></ion-icon>          
+        </ion-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <accordion *ngIf="translate.currentLang=='en'" text-left   title="Background"> <div [innerHTML]="CoalitionDetails.en_background"></div></accordion>
+    <accordion *ngIf="translate.currentLang=='fa'" text-right title="Background"> <div [innerHTML]="CoalitionDetails.da_background"></div></accordion>
+    <accordion *ngIf="translate.currentLang=='ps'" text-right title="Background"> <div [innerHTML]="CoalitionDetails.ps_background"></div></accordion>
+
+    <accordion  *ngIf="translate.currentLang=='en'" text-left  title="Structure"> <div [innerHTML]="CoalitionDetails.en_structure"></div></accordion>
+    <accordion *ngIf="translate.currentLang=='fa'" text-right title="Structure"> <div [innerHTML]="CoalitionDetails.da_structure"></div></accordion>
+    <accordion *ngIf="translate.currentLang=='ps'" text-right title="Structure"> <div [innerHTML]="CoalitionDetails.ps_structure"></div></accordion>
+
+
+    <accordion *ngIf="translate.currentLang=='en'" text-left  title="Members"> <div [innerHTML]="CoalitionDetails.en_members"></div></accordion>
+    <accordion *ngIf="translate.currentLang=='fa'" text-right title="Members"> <div [innerHTML]="CoalitionDetails.da_members"></div></accordion>
+    <accordion *ngIf="translate.currentLang=='ps'" text-right title="Members"> <div [innerHTML]="CoalitionDetails.ps_members"></div></accordion>
+
+    <accordion *ngIf="translate.currentLang=='en'" text-left title="Coalition Framework"> <div [innerHTML]="CoalitionDetails.en_framework"></div></accordion>
+    <accordion *ngIf="translate.currentLang=='fa'" text-right title="Coalition Framework"> <div [innerHTML]="CoalitionDetails.da_framework"></div></accordion>
+    <accordion *ngIf="translate.currentLang=='ps'" text-right title="Coalition Framework"> <div [innerHTML]="CoalitionDetails.ps_framework"></div></accordion>
+
+    <accordion *ngIf="translate.currentLang=='en'" text-left  title="Compaign Plan"> <div [innerHTML]="CoalitionDetails.en_plan"></div></accordion>
+    <accordion *ngIf="translate.currentLang=='fa'" text-right title="Compaign Plan"> <div [innerHTML]="CoalitionDetails.da_plan"></div></accordion>
+    <accordion *ngIf="translate.currentLang=='ps'" text-right title="Compaign Plan"> <div [innerHTML]="CoalitionDetails.ps_plan"></div></accordion>
+
+    <accordion *ngIf="translate.currentLang=='en'" text-left title="Achievement"> <div [innerHTML]="CoalitionDetails.en_achievements"></div></accordion>
+    <accordion *ngIf="translate.currentLang=='fa'" text-right title="Achievement"> <div [innerHTML]="CoalitionDetails.da_achievements"></div></accordion>
+    <accordion *ngIf="translate.currentLang=='ps'" text-right title="Achievement"> <div [innerHTML]="CoalitionDetails.ps_achievements"></div></accordion>
+
+</ion-content>

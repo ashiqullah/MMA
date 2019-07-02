@@ -1,5 +1,7 @@
 {
   "name": "MMA",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

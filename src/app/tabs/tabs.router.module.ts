@@ -12,7 +12,16 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: '../tab1/tab1.module#Tab1PageModule'
+            loadChildren: '../forum/forum.module#ForumPageModule'
+          }
+        ]
+      },
+      {
+        path: 'tab4',
+        children: [
+          {
+            path: '',
+            loadChildren: '../notifications/notifications.module#NotificationsPageModule'
           }
         ]
       },
@@ -21,8 +30,10 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: '../tab2/tab2.module#Tab2PageModule'
+            // loadChildren: '../tab2/tab2.module#Tab2PageModule'
+            loadChildren: '../casts/casts.module#CastsPageModule'
           }
+
         ]
       },
       {
@@ -30,10 +41,32 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: '../tab3/tab3.module#Tab3PageModule'
+            // loadChildren: '../tab3/tab3.module#Tab3PageModule'
+            loadChildren: '../home/home.module#HomePageModule'
           }
         ]
       },
+      {
+        path: 'Resources',
+        children: [
+          {
+            path: '',
+            // loadChildren: '../tab3/tab3.module#Tab3PageModule'
+            loadChildren: '../resurces/resurces.module#ResurcesPageModule'
+          }
+        ]
+        }
+        ,
+        {
+            path: 'coalition',
+            children: [
+                {
+                    path: '',
+                    // loadChildren: '../tab3/tab3.module#Tab3PageModule'
+                    loadChildren: '../coalitions/coalitions.module#CoalitionsPageModule'
+                }
+            ]
+        },
       {
         path: '',
         redirectTo: '/tabs/tab1',

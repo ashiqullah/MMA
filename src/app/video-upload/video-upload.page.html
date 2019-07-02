@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button defaultHref="/tabs/tab2"></ion-back-button>
+          </ion-buttons>
+    <ion-title>video-upload</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content padding>
+ 
+  <form [formGroup]="form">
+
+    <ion-item>
+      <ion-input type="string" (ngModel)="title" formControlName="title" placeholder="Title"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-textarea type="string" formControlName="description" placeholder="Description"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <input type="file" accept="video/mp4,video/x-m4v,video/*" class="custom-file-input" formControlName="file" (change)="onFileChange($event)">
+    </ion-item>
+    <ion-item>
+        <ion-label>Share with</ion-label>
+        <ion-select formControlName="groupid">
+          <ion-select-option  *ngFor="let group of groups" [value]="group.id">{{group.en_name}}</ion-select-option>
+       
+        </ion-select>
+      </ion-item>
+    <ion-button  expand="block" box-shadow (click)="postForm()" [disabled]="!form.valid" >
+      Submit
+    </ion-button>
+  </form>
+</ion-content>

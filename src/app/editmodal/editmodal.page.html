@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar >
+    <ion-title>{{modalTitle}}</ion-title>
+    <ion-buttons slot="secondary">
+        <ion-button (click)="dismiss()">
+          <ion-icon slot="start" name="close"></ion-icon>
+          
+        </ion-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col >
+        <ion-textarea class="textareastyle"    placeholder="Edit......"  [(ngModel)]="Edititemtext"></ion-textarea>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col text-center>
+        <ion-button (click)="closeModal()">Save</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

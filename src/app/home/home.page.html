@@ -1,0 +1,226 @@
+<ion-header>
+  <ion-toolbar>
+    <!--   <ion-buttons slot="start">
+          <ion-button class="white"  size="small" clear *ngIf="mode==='card'" (click)="makelist()"><ion-icon name="list"></ion-icon></ion-button>
+          <ion-button class="white"  size="small" clear *ngIf="mode==='list'" (click)="makecard()"><ion-icon name="grid"></ion-icon></ion-button>
+      </ion-buttons> -->
+      <ion-buttons slot="start">
+          <ion-menu-button menu="logout" autoHide="false"></ion-menu-button>
+         
+        </ion-buttons>
+
+
+
+    <ion-title>{{ 'HOMEPAGE' | translate }}</ion-title>
+  
+    <ion-button fill="clear"  slot="end" [routerLink]="['/new-news']"  [queryParams]="{categaryid:catagory,catagoryName:'title'}"><ion-icon color="energized"  name='add' ></ion-icon></ion-button>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card>
+        <ion-slides [options]="slideOpt" pager="true" >
+          <ion-slide *ngFor="let item of sliderdata; let i = index">
+            <div>
+      <img src="{{ServerUrl+'slideshow/'+item.path}}">
+      </div>
+      <div>
+        <p class="category" *ngIf="currenlanguage=='da'">{{item.caption_da}}</p>
+        <p class="category" *ngIf="currenlanguage=='en'">{{item.caption_en}}</p>
+        <p class="category" *ngIf="currenlanguage=='ps'">{{item.caption_ps}}</p>
+      </div>
+          </ion-slide>
+        </ion-slides>
+      </ion-card>
+    <ion-segment [(ngModel)]="segment" color="inverse">
+        <ion-segment-button value="News">
+          {{ 'NEWS' | translate }}
+        </ion-segment-button>
+        <ion-segment-button value="event">
+          {{ 'EVENT' | translate }}
+        </ion-segment-button>
+      </ion-segment>
+      
+      <div [ngSwitch]="segment">
+      <div *ngSwitchCase="'News'" class="form">
+          <ion-list>
+            
+              <div *ngFor="let article of news; let i = index">
+         
+         
+                  <ion-card *ngIf="article.type=='News'" >
+                      <ion-img src="{{article.image?(ServerUrl+article.image):(Newsimage)}}"></ion-img>
+                      <ion-card-header>
+                        <ion-card-subtitle>Posted By: {{article.username}} at {{article.created_at}}</ion-card-subtitle>
+                      </ion-card-header>
+                      <ion-card-content>
+                        <p *ngIf="currenlanguage=='da'">
+                            {{article.da_title}}
+                        </p>
+                        <p *ngIf="currenlanguage=='en'">
+                              {{article.en_title}}
+                          </p>
+                          <p *ngIf="currenlanguage=='ps'">
+                                {{article.ps_title}}
+                            </p>
+                     
+                       <ion-grid>
+                          <ion-row no-padding>
+                            <ion-col>
+                            <ion-badge  color="primary">News</ion-badge>
+
+                            </ion-col>
+                              <ion-col text-right no-padding>
+                                
+                            <ion-badge *ngIf="article.status==0" color="danger">Unpulished</ion-badge>
+                            <ion-badge  *ngIf="article.status==1" color="primary">pulished</ion-badge>
+
+                                </ion-col>
+                          </ion-row>
+                        <ion-row no-padding>
+                            <ion-col no-padding>
+                              <ion-button class="lowercase" fill="outline" size="small" (click)="detail(article)" >{{ 'READMORE' | translate }}</ion-button>
+
+                            </ion-col>
+                            <ion-col text-right no-padding>
+<!--                               <ion-button *ngIf="article.status==0" (click)="pulished(false,article.id,i)" > <ion-badge  color="danger">Unpulished</ion-badge></ion-button> 
+                         <ion-button *ngIf="article.status==1" (click)="pulished(true,i)" ><ion-badge  color="primary">pulished</ion-badge></ion-button> 
+                   -->
+    <ion-button  class="lowercase" fill="outline"  size="small"  [routerLink]="['/new-news']"  [queryParams]="{Newsid:article.id}">    Edit     </ion-button>
+                
+                              
+                            </ion-col>
+                           
+                            
+                          </ion-row>
+                          </ion-grid>
+                      </ion-card-content>
+                    </ion-card>
+   
+                   </div>
+             
+           </ion-list>
+        </div>
+        <div *ngSwitchCase="'event'" class="form">
+            <ion-list>
+            
+                <div *ngFor="let article of news">
+           
+           
+                    <ion-card *ngIf="article.type=='Event'">
+                        <ion-img src="{{article.image?(ServerUrl+article.image):(Eventimage)}}"></ion-img>
+                        <ion-card-header>
+                          <ion-card-subtitle>Posted By: {{article.username}} at {{article.created_at}}</ion-card-subtitle>
+                        </ion-card-header>
+                        <ion-card-content>
+                          <p *ngIf="currenlanguage=='da'">
+                              {{article.da_title}}
+                          </p>
+                          <p *ngIf="currenlanguage=='en'">
+                                {{article.en_title}}
+                            </p>
+                            <p *ngIf="currenlanguage=='ps'">
+                                  {{article.ps_title}}
+                              </p>
+                              <ion-grid>
+                                  <ion-row no-padding>
+                                    <ion-col>
+                                        <ion-badge  color="primary">Event</ion-badge>
+                                    </ion-col>
+                                      <ion-col text-right no-padding>
+                                        
+                                    <ion-badge *ngIf="article.status==0" color="danger">Unpulished</ion-badge>
+                                    <ion-badge  *ngIf="article.status==1" color="primary">pulished</ion-badge>
+        
+                                        </ion-col>
+                                  </ion-row>
+                                <ion-row no-padding>
+                                    <ion-col no-padding>
+                                      <ion-button class="lowercase" fill="outline" size="small" (click)="detail(article)" >{{ 'READMORE' | translate }}</ion-button>
+        
+                                    </ion-col>
+                                    <ion-col text-right no-padding>
+        <!--                               <ion-button *ngIf="article.status==0" (click)="pulished(false,article.id,i)" > <ion-badge  color="danger">Unpulished</ion-badge></ion-button> 
+                                 <ion-button *ngIf="article.status==1" (click)="pulished(true,i)" ><ion-badge  color="primary">pulished</ion-badge></ion-button> 
+                           -->
+            <ion-button  class="lowercase" fill="outline"  size="small"  [routerLink]="['/new-news']"  [queryParams]="{Newsid:article.id}">    Edit     </ion-button>
+                        
+                                      
+                                    </ion-col>
+                                   
+                                    
+                                  </ion-row>
+                                  </ion-grid>
+                        </ion-card-content>
+                      </ion-card>
+     
+                     </div>
+               
+             </ion-list>
+          </div>
+      </div>
+    <div text-center>
+        <ion-spinner *ngIf="loading"></ion-spinner>
+      </div>
+
+    <!-- text-wrap *ngIf="mode==='list'"-->
+   <ion-list *ngIf="mode==='list'"> 
+      <ion-item  *ngFor="let article of news">
+          <ion-thumbnail item-right>
+              <img src="{{article.image?(ServerUrl+article.image):(Newsimage)}}" alt="no image" />
+          </ion-thumbnail>
+          <span class="category">{{article.da_title}}</span>
+          
+      </ion-item>
+  </ion-list>
+<!--   <ion-list *ngIf="mode==='card'">
+    
+
+     
+
+
+      <ion-card *ngFor="let article of news">
+          <ion-img src="{{ServerUrl+article.image}}"></ion-img>
+          <ion-card-header>
+            <ion-card-subtitle>Posted By: {{article.username}} at {{article.created_at}}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <p *ngIf="currenlanguage=='da'">
+                {{article.da_title}}
+            </p>
+            <p *ngIf="currenlanguage=='en'">
+                  {{article.en_title}}
+              </p>
+              <p *ngIf="currenlanguage=='ps'">
+                    {{article.ps_title}}
+                </p>
+            <ion-button ion-button fill="outline" (click)="detail(article)" >{{ 'READMORE' | translate }}</ion-button>
+      
+          </ion-card-content>
+        </ion-card>
+        <ion-card *ngFor="let article of news">
+          <ion-img src="{{ServerUrl+article.image}}"></ion-img>
+          <ion-card-header>
+            <ion-card-subtitle>Posted By: {{article.username}} at {{article.created_at}}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <p *ngIf="currenlanguage=='da'">
+                {{article.da_title}}
+            </p>
+            <p *ngIf="currenlanguage=='en'">
+                  {{article.en_title}}
+              </p>
+              <p *ngIf="currenlanguage=='ps'">
+                    {{article.ps_title}}
+                </p>
+            <ion-button ion-button fill="outline" (click)="detail(article)" >{{ 'READMORE' | translate }}</ion-button>
+      
+          </ion-card-content>
+        </ion-card>
+  </ion-list> -->
+
+  <ion-infinite-scroll *ngIf="news && news.length" (ionInfinite)="loadMoreNews($event)">
+      <ion-infinite-scroll-content ></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>

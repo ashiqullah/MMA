@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+    <ion-back-button defaultHref="/tabs/tab2"></ion-back-button>
+    </ion-buttons>
+    <ion-title><p class="vw">{{LoadedCast.title}}</p></ion-title>
+    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+ 
+
+
+   
+  <ion-card>
+  
+
+    <ion-item >
+        
+      <ion-avatar   slot="start">
+        <img *ngIf="LoadedCast.user" src="{{ServerUrl+LoadedCast.user.image}}">
+      </ion-avatar>
+      <ion-label class="vw">{{LoadedCast.title}}
+       <p style="font-size: 12px;" text-left>{{LoadedCast.created_at}}</p></ion-label>
+    <!--    <ion-buttons fill="clear"  left>
+          <ion-button ion-button fill="clear" (click)="presentActionSheet(item.id)"  icon-only >
+            <ion-icon color="dark" name="more"></ion-icon>
+          </ion-button>
+        </ion-buttons> -->
+      
+    </ion-item>
+
+
+    <ion-card-content>
+      <video style="width:100%;" src="{{ServerUrl}}upload/casts/{{LoadedCast.url}}" autoplay controls  preload="metadata"  webkit-playsinline="webkit-playsinline" class="videoPlayer">
+        <source src="{{ServerUrl}}upload/casts/{{LoadedCast.url}}" type="video/mp4" />
+       </video>
+       <p [innerHTML]="LoadedCast.description"></p>
+    </ion-card-content>
+
+
+    </ion-card>
+    <div class="ion-text-center"><ion-label ><strong>{{ 'COMMENTS' | translate }}</strong></ion-label>
+    </div>
+   
+    <div class="comment-box">
+        <ion-card *ngFor="let comment of LoadedCast.comments; let i = index">
+
+            <ion-item >
+          
+                <ion-avatar  slot="start">
+                  <img src="{{(comment.user.image)?(ServerUrl+comment.user.image):(comment.user.gender==1?Maleimage:Femaleimage)}}">
+                </ion-avatar>
+                <ion-label>{{comment.user.name}}
+                 <p style="font-size: 12px;" text-left>{{comment.created_at}}</p></ion-label>
+                 <ion-buttons fill="clear" *ngIf="comment.user_id==userID || userType==1"  left>
+                    <ion-button ion-button fill="clear" (click)="commentActionSheet(comment.id,i,comment.comment)"  icon-only >
+                      <ion-icon color="dark" name="more"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                
+              </ion-item>
+
+          <ion-card-content>
+                
+                <p [innerHTML]="comment.comment"></p>
+          </ion-card-content>
+         
+        </ion-card>
+      </div>
+
+</ion-content>
+<ion-footer >
+  <!--   <ion-textarea [(ngModel)]="message" rows="3" type="text" placeholder="Comment .... "></ion-textarea>
+    <ion-button ion-button small float-right round (click)="sendMessage(LoadedCast.id)" >Send</ion-button> -->
+    <ion-item>
+        <ion-textarea  [(ngModel)]="message"    placeholder="Comment .... "></ion-textarea >
+        <ion-button   class="lowercase" clear large item-right color="primary" (click)="sendMessage(LoadedCast.id)" ><ion-icon name='send'></ion-icon></ion-button>
+
+      </ion-item>
+  </ion-footer>

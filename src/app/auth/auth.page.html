@@ -1,0 +1,68 @@
+<ion-header>
+
+  <ion-nav color="inverse">
+    <ion-title>Please Login </ion-title>
+  </ion-nav>
+
+</ion-header>
+
+
+<ion-content>
+
+  <ion-card style="margin-top: 10px; height:90%" box-shadow>
+    <ion-card-content>
+
+     <!--  <ion-segment [(ngModel)]="segment" color="inverse">
+        <ion-segment-button value="login">
+          Login
+        </ion-segment-button>
+        <ion-segment-button value="register">
+          Register
+        </ion-segment-button>
+      </ion-segment> -->
+
+      <!-- <div [ngSwitch]="segment"> -->
+
+        <img src="assets/images/logo.png" style="margin-top: 40px" alt="logo">
+        <ion-item-divider>
+            
+          </ion-item-divider>
+
+        <!-- <div *ngSwitchCase="'login'" class="form"> -->
+          <ion-item>
+            <ion-input type="email" placeholder="Email" [(ngModel)]="formLogin.email"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="password" placeholder="Password" [(ngModel)]="formLogin.password"></ion-input>
+          </ion-item>
+
+          <ion-button  expand="block"  box-shadow (click)="doLogin(formLogin)">
+            Login
+          </ion-button>
+        <!-- </div> -->
+<!-- 
+        <div *ngSwitchCase="'register'" class="form">
+          <ion-item>
+            <ion-input type="string" placeholder="Name" [(ngModel)]="formRegister.name"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="email" placeholder="Email" [(ngModel)]="formRegister.email"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="password" placeholder="Password" [(ngModel)]="formRegister.password"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="password" placeholder="Confirm password" [(ngModel)]="formRegister.password_confirmation"></ion-input>
+          </ion-item>
+
+          <ion-button  expand="block"  box-shadow  (click)="doRegister()">
+            Register
+          </ion-button>
+        </div> -->
+
+      <!-- </div> -->
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
