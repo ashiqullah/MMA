@@ -9,6 +9,7 @@ import { VideoDetailsPage } from './video-details.page';
 
 import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
 import { TranslateModule} from '@ngx-translate/core';
+import { TimeagoModule } from 'ngx-timeago';
 
 
 const routes: Routes = [
@@ -24,6 +25,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     TranslateModule,
+    TimeagoModule,
     RouterModule.forChild(routes)
   ],
   declarations: [VideoDetailsPage]

@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { CommentsPage } from './comments.page';
 import { TranslateModule} from '@ngx-translate/core';
+import { TimeagoModule } from 'ngx-timeago';
 
 const routes: Routes = [
   {
@@ -21,7 +22,8 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     TranslateModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    TimeagoModule
   ],
   declarations: [CommentsPage]
 })

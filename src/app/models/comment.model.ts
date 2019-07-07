@@ -1,13 +1,11 @@
-export class ArticleModel{
+export class CommentModel {
     id: number;
     postedby: string;
     postedByImage: string;
     postedOn: string;
     postedByGender: number;
-    title: string;
     content: string;
     totalLikes: number;
-    totalComments: number;
     totalReplies: number;
     isLiked: boolean;
     postedByid: number;
@@ -15,4 +13,4 @@ export class ArticleModel{
 
 
 
-  }
+}

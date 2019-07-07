@@ -12,8 +12,8 @@
 
 <ion-content>
 
-  <ion-list *ngIf="replies">
-    <ion-item  *ngFor="let commentreplies of replies; let i = index">
+  <ion-list *ngIf="ReplyModelArray">
+  <!--   <ion-item  *ngFor="let commentreplies of replies; let i = index">
 
     <ion-card slot="start" style="width: 100%;" >        <ion-item>
         <ion-avatar  slot="start">
@@ -49,7 +49,55 @@
       </ion-card> 
  
  
-    </ion-item>
+    </ion-item> -->
+
+    <ion-card *ngFor="let reply of ReplyModelArray; let i = index">
+      <ion-item>
+          <ion-avatar  slot="start">
+              <img src="{{reply.postedByImage?(ServerUrl+reply.postedByImage):(reply.postedByGender==1?maleimage:femaleimage)}}">
+
+          </ion-avatar>
+          <ion-buttons *ngIf="reply.hasAccessToEdit" style="float:right;margin:0px;" slot="end" fill="clear" right>
+              <ion-button ion-button fill="clear" (click)="replyActionSheet(reply.id,i,reply.content)"  icon-only>
+                  <ion-icon color="dark" name="more"></ion-icon>
+              </ion-button>
+          </ion-buttons>
+
+          <ion-label text-wrap>
+              <h3 style="display:inline">  {{reply.postedby}}</h3>
+              <!--<p style="font-size: 12px;">{{item.message}} </p>-->
+              <div style="font-size: 12px;" class="ion-no-padding ion-text-wrap" [innerHTML]="reply.content"></div>
+              
+          </ion-label>
+
+
+      </ion-item>
+      <ion-grid>
+          <ion-row>
+              <ion-col style="padding:0px;">
+                  <ion-button fill="clear" class="lowercase" color="primary"  size="small" icon-start>
+                    <ion-note item-right style="font-size: 12px;">{{reply.postedOn | timeago}}</ion-note>
+                  </ion-button>
+                  
+
+              </ion-col>
+              <ion-col style="padding:0px;">
+               
+                  <ion-button fill="clear" *ngIf="!reply.isLiked" class="lowercase" color="primary" (click)="ReplyLikeClick(reply.id)" size="small" icon-start>
+                      <ion-icon color="energized" name='thumbs-up'></ion-icon>
+                      {{reply.totalLikes}} {{ 'LIKES' | translate }}
+                  </ion-button>
+
+                  <ion-button fill="clear" *ngIf="reply.isLiked" class="lowercase" [style.color]="'#042154'" (click)="ReplyLikeClick(reply.id)" size="small" icon-start>
+                      <ion-icon  name='thumbs-up'></ion-icon>
+                      {{reply.totalLikes}} {{ 'LIKES' | translate }}
+                  </ion-button>
+
+              </ion-col>
+             
+          </ion-row>
+      </ion-grid>
+  </ion-card>
     </ion-list>
 
     

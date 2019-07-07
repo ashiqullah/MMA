@@ -14,8 +14,10 @@ import { UserProvider } from '../providers/user/user';
 export class UserProfilePage implements OnInit {
   @Input() value: number;
   passedvalue: number;
-  userprofile: any[];
+  userprofile: any;
   ServerUrl: string;
+  maleimage: string;
+  femaleimage: string;
   constructor(
     public modalController: ModalController,
     private authService: AuthProvider,
@@ -23,7 +25,9 @@ export class UserProfilePage implements OnInit {
   ) {
       this.passedvalue = this.value;
       this.ServerUrl = Service.url;
-      this.userprofile = [];
+     
+      this.maleimage = Service.maleImageUrl;
+      this.femaleimage = Service.femaleImageUrl;
 
    }
    close() {
@@ -31,6 +35,7 @@ export class UserProfilePage implements OnInit {
   }
 
   ngOnInit() {
+ 
     this.getUserprofile(this.value);
 
   }

@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
-import {TimeAgoPipe} from 'time-ago-pipe';
+//import {TimeAgoPipe} from 'time-ago-pipe';
 
+import { TimeagoModule } from 'ngx-timeago';
 import { IonicModule } from '@ionic/angular';
 
 import { ArticlePage } from './article.page';
@@ -21,8 +22,9 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    TimeagoModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ArticlePage,TimeAgoPipe]
+  declarations: [ArticlePage]
 })
 export class ArticlePageModule {}

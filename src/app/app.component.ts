@@ -32,6 +32,24 @@ export class AppComponent {
   ServerUrl: string;
     Maleimage: string;
     Femaleimage: string;
+    public appPages = [
+      {
+        title: 'profile',
+        url: '/profile',
+        icon: 'person'
+      },
+      {
+        title: 'Settings',
+        url: '/configuration',
+        icon: 'cog'
+      }
+      ,
+      {
+        title: 'Change Password',
+        url: '/changepassword',
+        icon: 'lock'
+      }
+    ];
 
   constructor(
     private platform: Platform,
@@ -61,11 +79,12 @@ export class AppComponent {
             this.user = newprofile;
      });
      events.subscribe('user:get', (result) => {
-     this.getUser();
-});
-events.subscribe('notification:get', (result) => {
+    // this.getUser();
+    this.getPermission();
+     });
+/* events.subscribe('notification:get', (result) => {
  this.getNotifications()
-});
+}); */
 
 
 
@@ -117,8 +136,9 @@ events.subscribe('notification:get', (result) => {
 
     if (result) {
      // this.Allcatagories();
-     this.getUser();
-      this.getNotifications();
+   //  this.getUser();
+    //  this.getNotifications();
+      this.getPermission();
 
     } else {
       this.router.navigateByUrl(this.rootPage);
@@ -190,6 +210,26 @@ events.subscribe('notification:get', (result) => {
         this.showAlert('Error', 'Error on get user info', null);
       
       })
+  }
+
+  getPermission()
+  {
+    this.userService.getuserpermission()
+      .then((response: any) => {
+
+      this.userService.storeUserInfo({id: response.user.id, name: response.user.name, user_type: response.user.user_type});
+
+       this.userService.storePermission(response.permissions);
+       this.user = response.user;
+       this.events.publish('Notification:viewed', response.notifications);
+
+
+      })
+      .catch(err => {
+        this.showAlert('Error', 'Error on get user info', null);
+      
+      })
+
   }
 
  

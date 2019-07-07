@@ -32,7 +32,8 @@ const routes: Routes = [
   { path: 'coalition-deputies', loadChildren: './coalition-deputies/coalition-deputies.module#CoalitionDeputiesPageModule' },
   { path: 'changepassword', loadChildren: './changepassword/changepassword.module#ChangepasswordPageModule' },
   { path: 'menu', loadChildren: './menu/menu.module#MenuPageModule' },
-  { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' }
+  { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' },
+  { path: 'reset-password', loadChildren: './reset-password/reset-password.module#ResetPasswordPageModule' }
 ];
 @NgModule({
   imports: [

@@ -45,6 +45,7 @@ export class AuthProvider {
   removeCredentials() {
     this.storage.remove('auth');
     this.storage.remove('UserDetails');
+    this.storage.remove('Permissions');
   }
 
   storeCredentials(response: any) {
@@ -74,5 +75,12 @@ export class AuthProvider {
       'Authorization': `Bearer ${auth.access_token}`,
     });
     return this.http.post(`${Service.apiUrl}/User/updateProfileAjax`,formdata, { headers }).toPromise();
+  }
+
+  async resetPassword(email: any)
+  {
+    let resetemail={email:email}
+   
+    return this.http.post(`${Service.apiUrl}/password/email`, resetemail).toPromise();
   }
 }

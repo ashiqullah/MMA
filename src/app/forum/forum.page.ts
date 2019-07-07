@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { NavController, ModalController, IonContent , ActionSheetController , PopoverController , Events, MenuController } from '@ionic/angular';
 
 import { AuthProvider } from '../providers/auth/auth';
@@ -11,6 +11,10 @@ import {CommentsPage} from "../comments/comments.page";
 import { MRichEditorPage } from '../m-rich-editor/m-rich-editor.page';
 import { TranslateService } from '@ngx-translate/core';
 import { ArticleModel } from '../models/article.model';
+import { TimeagoModule } from 'ngx-timeago';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { File } from '@ionic-native/file/ngx';
+
 
 
 
@@ -19,12 +23,16 @@ import { ArticleModel } from '../models/article.model';
   templateUrl: './forum.page.html',
   styleUrls: ['./forum.page.scss'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  
 })
 export class ForumPage implements OnInit {
   @ViewChild(IonContent) content: IonContent;
 
- ArticleModelArray:  Array<ArticleModel> = new Array<ArticleModel>();
-  Articals: any[]; 
+    ArticleModelArray: ArticleModel[];//  Array<ArticleModel> = new Array<ArticleModel>();
+    
+
+ // Articals: any[]; 
   loading: boolean = false;
   catagoryName: any;
   ServerUrl: string;
@@ -49,13 +57,16 @@ export class ForumPage implements OnInit {
     public popoverCtrl: PopoverController,
     public events: Events,
     public translate: TranslateService,
-    private zone: NgZone
+    private zone: NgZone,
+    private cdr: ChangeDetectorRef,
+    private transfer: FileTransfer,
+    private file: File
   
 
   
   ) {
 
-    this.Articals = [];
+   // this.Articals = [];
     this.ArticleModelArray=[];
     this.ServerUrl = Service.url;
     this.Maleimage = Service.maleImageUrl;
@@ -66,19 +77,34 @@ export class ForumPage implements OnInit {
    });
    
 
-
     events.subscribe('Comment:created', (articleid, CommentCount) => {
       let Articleindex = this.getArticleindex(articleid);
-      this.Articals[Articleindex].comments.length = CommentCount;
+      this.ArticleModelArray[Articleindex].totalComments = CommentCount;
+      this.cdr.detectChanges();
+
     });
+    events.subscribe('Reply:created', (articleid, RepliesCount) => {
+          let Articleindex = this.getArticleindex(articleid);
+          this.ArticleModelArray[Articleindex].totalReplies = RepliesCount;
+      this.cdr.detectChanges();
+
+      });
 
     events.subscribe('category:changed', (catagoryId) => {
      this.getArticlesByID(catagoryId);
-    })
+    });
 
 
   }
-
+   fileTransfer: FileTransferObject = this.transfer.create();
+   download() {
+    const url = 'http://www.example.com/file.pdf';
+    this.fileTransfer.download(url, this.file.dataDirectory + 'file.pdf').then((entry) => {
+      console.log('download complete: ' + entry.toURL());
+    }, (error) => {
+      // handle error
+    });
+  }
  
 
  
@@ -102,64 +128,103 @@ export class ForumPage implements OnInit {
     getArticlesByID(catagoryId: number) {
 
     this.loading = true;
-    this.Articals = [];
+    //this.Articals = [];
     this.ArticleModelArray=[];
-    this.Articals.pop();
+  //  this.Articals.pop();
    // this.content.scrollToTop(1500);
     this.articleService.getArticles(catagoryId).then((response: any) => {
       this.loading = false;
-      this.Articals = response.articles;
+     // this.Articals = response.articles;
       this.catagoryName = response.category;
-     /*  console.log(response.articles);
+      console.log(response.articles);
       let tmp=response.articles;
       for (let i = 0; i < response.articles.length; i++)
       {
-        let tmpcomment=null;
-        if(tmp[i].comments.length>0)
-        {
-
-          tmpcomment= {
-            commentcontent:tmp[i].comments[0].reply,
-            userid:response.articles[0].comments[0].user_id,
-            userimage: response.articles[i].comments[0].user.image
-          };
-        }
-        console.log(tmpcomment);
+       
+        
         this.ArticleModelArray.push({
-          id: response.articles[i].id,
-          content: response.articles[i].body,
-          isLiked: true,
-          lastComment: tmpcomment,
-          postedByImage: response.articles[i].user.image,
-          postedOn: response.articles[i].created_at,
-          postedby: response.articles[i].name,
-          title: response.articles[i].title,
-          totalComments: response.articles[i].comments.length,
-          totalLikes: response.articles[i].likes.length,
-          totalReplies: response.articles[i].replies.length,
-          postedByGender: response.articles[i].user.gender,
+          id:tmp[i].id,
+          content: tmp[i].body,
+           isLiked: (tmp[i].likes.find(x => x.user_id === this.userID)) ? true : false,         
+          postedByImage: tmp[i].user.image,
+          postedOn: tmp[i].created_at,
+          postedby: tmp[i].user.name,
+          title:tmp[i].title,
+          totalComments: tmp[i].comments.length,
+          totalLikes: tmp[i].likes.length,
+          totalReplies: tmp[i].replies.length,
+          postedByGender:tmp[i].user.gender,
+          postedByid:tmp[i].user.id,
+          hasAccessToEdit: (tmp[i].user_id == this.userID || this.userType==1) ? true : false,
         });
 
       }
-      console.log(this.ArticleModelArray); */
+      this.cdr.detectChanges();
+      console.log(this.ArticleModelArray);
     });
     
   }
-  LikeCliked(articleid, index) {
-    this.articleService.getLikeInfo(articleid).then((response: any) => {
-      this.Articals[index].likes.length = response.likes;
+  LikeCliked(articleid) {
+      this.articleService.getLikeInfo(articleid).then((response: any) => {
+          this.zone.run(() => {
+              let indexOfArticle = this.getArticleindex(articleid);
+              if (response.like === 'liked') {
+                  this.ArticleModelArray[indexOfArticle].isLiked = true;
+              }
+              else {
+                  this.ArticleModelArray[indexOfArticle].isLiked = false
+              }
+              this.ArticleModelArray[indexOfArticle].totalLikes =  response.likes;
+              
+          });
+          this.cdr.detectChanges();
     });
   }
 
 
 
   loadMoreArticles(event) {
-      let last: any = this.Articals[this.Articals.length - 1];
+    /*   let last: any = this.Articals[this.Articals.length - 1];
       this.articleService.getMoreArticles(this.catagoryName.id, last.id).then((response: any) => {
       this.Articals = this.Articals.concat(response);
       event.target.complete();
 
+    }); */
+
+    let last: any=this.ArticleModelArray[this.ArticleModelArray.length-1];
+   
+    this.articleService.getMoreArticles(this.catagoryName.id, last.id).then((response: any) => {
+      //this.Articals = this.Articals.concat(response);
+
+      let tmp=response;
+      for (let i = 0; i < response.length; i++)
+      {
+        
+        this.ArticleModelArray.push({
+          id: tmp[i].id,
+          content: tmp[i].body,
+          isLiked:(tmp[i].likes.find(x => x.user_id === this.userID))? true : false,         
+          postedByImage: tmp[i].user.image,
+          postedOn: tmp[i].created_at,
+          postedby: tmp[i].user.name,
+          title: tmp[i].title,
+          totalComments: tmp[i].comments.length,
+          totalLikes: tmp[i].likes.length,
+          totalReplies: tmp[i].replies.length,
+          postedByGender: tmp[i].user.gender,
+          postedByid:tmp[i].user.id,
+          hasAccessToEdit: (tmp[i].user_id == this.userID || this.userType==1) ? true : false,
+
+        });
+      }
+      this.cdr.detectChanges();
+      console.log(this.ArticleModelArray);
+   
+    //  this.ArticleModelArray = this.ArticleModelArray.concat(tmp);
+      event.target.complete();
+
     });
+
   }
 
 
@@ -187,7 +252,24 @@ export class ForumPage implements OnInit {
         handler: () => {
           this.Articledit(articleId, content, Articleindex, title);
         }
-      },  {
+      },
+      {
+        text: this.translate.instant('DELETE'),
+        icon: 'trash',
+        handler: () => {
+          this.zone.run(() => {
+           
+            this.articleService.deleteForum(articleId).then((response: any) => {
+            this.ArticleModelArray.splice(Articleindex, 1);
+      this.cdr.detectChanges();
+
+        
+            });
+          });
+        }
+      }
+      
+      ,  {
         text: this.translate.instant('CANCEL'),
         icon: 'close',
         role: 'cancel',
@@ -219,15 +301,20 @@ export class ForumPage implements OnInit {
         console.log(this.dataReturned);
         this.dataReturned = dataReturned.data;
         const formData = new FormData();
-       // formData.append('attachment', this.file);
-        formData.append('article_id', this.Articals[articleindex].id);
+        if(this.dataReturned.filedata)
+        {
+       formData.append('attachment',this.dataReturned.filedata);          
+        }
+        formData.append('article_id', this.ArticleModelArray[articleindex].id.toString());
         formData.append('title', this.dataReturned.title);
         formData.append('body', this.dataReturned.content);
-
         this.articleService.editarticle(formData).then((response: any) => {
+        //  debugger;
           this.zone.run(() => {
-            this.Articals[articleindex].body = response.body;
-            this.Articals[articleindex].title = response.title;
+             this.ArticleModelArray[articleindex].content = response.body;
+              this.ArticleModelArray[articleindex].title = response.title; 
+      this.cdr.detectChanges();
+             
           });
           
         });
@@ -238,7 +325,7 @@ export class ForumPage implements OnInit {
   }
 
     ngOnInit() {
-
+        this.cdr.detach();
         this.getArticlesByID(1);
         this.Allcatagories();
        
@@ -249,7 +336,9 @@ export class ForumPage implements OnInit {
 
 
 
-async commentPost(articleId) {
+    async commentPost(articleId) {
+     //   changeDetectorRef.detach();
+
   let modal = await this.modalController.create({
     component: CommentsPage,
     componentProps: { articleid: articleId }
@@ -257,21 +346,15 @@ async commentPost(articleId) {
   modal.present();
 }
  getArticleByFind(id){
-  return this.Articals.find(x => x.id === id);
+//  return this.Articals.find(x => x.id === id);
 }
-getArticleindex(id){
+ getArticleindex(id){
 
-  let article = this.Articals.find(x => x.id === id);
-  return this.Articals.indexOf(article);
-    }
+     let article = this.ArticleModelArray.find(x => x.id === id);
+     return this.ArticleModelArray.indexOf(article);
+    } 
 
-    checkIfLiked(userid, items) {
-        //let didfount = items.find(x => x.user_id === userid);
-        //let checked = (typeof didfount !== 'undefined') ? true : false;
-        //console.log(didfount);
-        // debugger;
-        return true;
-    }
+   
 
  
 

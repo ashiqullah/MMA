@@ -18,6 +18,7 @@ export class MRichEditorPage implements OnInit {
   content: string;
   modalTitle: string;
   title: string;
+  file;
 
   constructor(  private http: HttpClient , public storage: Storage, private modalController: ModalController,
     private navParams: NavParams) {
@@ -41,11 +42,19 @@ export class MRichEditorPage implements OnInit {
     console.log(this.content);
   }
   async closeModal() {
-    const onClosedData:any = {content:this.content,title:this.title};
+    const onClosedData:any = {content:this.content,title:this.title,filedata:this.file};
     await this.modalController.dismiss(onClosedData);
   }
   dismiss() {
     this.modalController.dismiss();
+}
+
+onFileChange(event) {
+  if (event.target.files && event.target.files.length) {
+      const [file] = event.target.files;
+      this.file = file;
+
+  }
 }
 
 /*   public onChange( { editor }: ChangeEvent ) {

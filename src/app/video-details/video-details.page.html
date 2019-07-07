@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
     <ion-back-button defaultHref="/tabs/tab2"></ion-back-button>
     </ion-buttons>
-    <ion-title><p class="vw">{{LoadedCast.title}}</p></ion-title>
+    <ion-title><p  *ngIf="LoadedCast" class="vw">{{LoadedCast.title}}</p></ion-title>
     
   </ion-toolbar>
 </ion-header>
@@ -13,7 +13,7 @@
 
 
    
-  <ion-card>
+  <ion-card *ngIf="LoadedCast">
   
 
     <ion-item >
@@ -21,8 +21,14 @@
       <ion-avatar   slot="start">
         <img *ngIf="LoadedCast.user" src="{{ServerUrl+LoadedCast.user.image}}">
       </ion-avatar>
-      <ion-label class="vw">{{LoadedCast.title}}
-       <p style="font-size: 12px;" text-left>{{LoadedCast.created_at}}</p></ion-label>
+
+      <ion-label style="margin: 2px;" text-wrap>
+            {{LoadedCast.user.name}}
+              <time style="font-size: 12px;float: right;"> {{ LoadedCast.created_at | timeago }}</time>
+              <h3>{{ LoadedCast.title }}</h3>
+          </ion-label>
+      
+    
     <!--    <ion-buttons fill="clear"  left>
           <ion-button ion-button fill="clear" (click)="presentActionSheet(item.id)"  icon-only >
             <ion-icon color="dark" name="more"></ion-icon>
@@ -44,8 +50,8 @@
     <div class="ion-text-center"><ion-label ><strong>{{ 'COMMENTS' | translate }}</strong></ion-label>
     </div>
    
-    <div class="comment-box">
-        <ion-card *ngFor="let comment of LoadedCast.comments; let i = index">
+    <div *ngIf="LoadedCast.comments && LoadedCast.comments.length" class="comment-box">
+        <!--<ion-card *ngFor="let comment of LoadedCast.comments; let i = index">
 
             <ion-item >
           
@@ -65,7 +71,29 @@
           <ion-card-content>
                 
                 <p [innerHTML]="comment.comment"></p>
-          </ion-card-content>
+          </ion-card-content>-->
+             <ion-card *ngFor="let comment of LoadedCast.comments?.reverse(); let i = index">
+      <ion-item>
+          <ion-avatar slot="start">
+              <img src="{{comment.user.image?(ServerUrl+comment.user.image):(comment.user.gender==1?Maleimage:Femaleimage)}}">
+
+          </ion-avatar>
+          <ion-buttons style="float:right;margin:0px;" *ngIf="comment.user_id==userID || userType==1" slot="end" fill="clear" right>
+              <ion-button ion-button fill="clear" (click)="commentActionSheet(comment.id,comment.comment)"  icon-only>
+                  <ion-icon color="dark" name="more"></ion-icon>
+              </ion-button>
+          </ion-buttons>
+
+          <ion-label text-wrap>
+              <h3 style="display:inline">  {{comment.user.name}}</h3>
+              <time style="font-size: 12px;float: right;"> {{ comment.created_at | timeago }}</time>
+              <!--<p style="font-size: 12px;">{{item.message}} </p>-->
+              <div style="font-size: 12px;" class="ion-no-padding ion-text-wrap" [innerHTML]="comment.comment"></div>
+              
+          </ion-label>
+
+
+      </ion-item>
          
         </ion-card>
       </div>
@@ -76,7 +104,7 @@
     <ion-button ion-button small float-right round (click)="sendMessage(LoadedCast.id)" >Send</ion-button> -->
     <ion-item>
         <ion-textarea  [(ngModel)]="message"    placeholder="Comment .... "></ion-textarea >
-        <ion-button   class="lowercase" clear large item-right color="primary" (click)="sendMessage(LoadedCast.id)" ><ion-icon name='send'></ion-icon></ion-button>
+        <ion-button [disabled]="!message"   class="lowercase" clear large item-right color="primary" (click)="sendMessage(LoadedCast.id)" ><ion-icon name='send'></ion-icon></ion-button>
 
       </ion-item>
   </ion-footer>

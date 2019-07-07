@@ -8,6 +8,7 @@ import {RepliesPage} from '../replies/replies.page';
 import { EditmodalPage } from '../editmodal/editmodal.page'
 import { UserProvider } from '../providers/user/user';
 import { TranslateService } from '@ngx-translate/core';
+import { CommentModel } from '../models/comment.model';
 
 @Component({
   selector: 'app-comments',
@@ -25,6 +26,7 @@ export class CommentsPage implements OnInit {
   dataReturned:any;
   userID:any;
   userType:any;
+    commentModelArray: Array<CommentModel> = new Array<CommentModel>();
 
 
   constructor(    public navParams: NavParams,
@@ -39,11 +41,15 @@ export class CommentsPage implements OnInit {
 
     ) {
       this.comments = [];
+
     
       this.ServerUrl = Service.url;
       this.maleimage = Service.maleImageUrl;
       this.femaleimage = Service.femaleImageUrl;
-   
+      events.subscribe('ReplyForcomment:created', (commentid, RepliesCount) => {
+        let commentindex = this.getCommentindex(commentid);
+        this.commentModelArray[commentindex].totalReplies = RepliesCount;
+    });
 
 
      }
@@ -64,17 +70,53 @@ export class CommentsPage implements OnInit {
       this.userType=response.user_type;
      });
     this.articleService.getComments(this.articleid).then((response: any) => {
-      this.comments = response;
+        this.comments = response;
+        console.log(response);
+        let tmp = response;
+        for (let i = 0; i < response.length; i++) {
+
+
+            this.commentModelArray.push({
+                id: tmp[i].id,
+                content: tmp[i].reply,
+                isLiked: (tmp[i].likes.find(x => x.user_id === this.userID)) ? true : false,
+                postedByImage: tmp[i].user.image,
+                postedOn: tmp[i].created_at,
+                postedby: tmp[i].user.name,
+                totalLikes: tmp[i].likes.length,
+                totalReplies: tmp[i].replies.length,
+                postedByGender: tmp[i].user.gender,
+                postedByid:tmp[i].user.id,
+                hasAccessToEdit: (tmp[i].user_id == this.userID || this.userType==1) ? true : false,
+            });
+
+        }
+
     });
   }
 
   postComment() {
     this.articleService
     .userComment(this.articleid, this.commentText)
-    .then((response: any) => {
-      this.comments.push(response);
+        .then((response: any) => {
+let tmp = response.comment;
+this.commentModelArray.unshift({
+                id: tmp.id,
+                content: tmp.reply,
+                isLiked: (tmp.likes.find(x => x.user_id === this.userID)) ? true : false,
+                postedByImage: tmp.user.image,
+                postedOn: tmp.created_at,
+                postedby: tmp.user.name,
+                totalLikes: tmp.likes.length,
+                totalReplies: tmp.replies.length,
+                postedByGender: tmp.user.gender,
+                postedByid:tmp.user.id,
+                hasAccessToEdit: (tmp.user_id == this.userID || this.userType==1) ? true : false,
+            });
+           // this.commentModelArray.push(response);
+this.events.publish('Comment:created', this.articleid, (response.totalcomments));
+
     });
-    this.events.publish('Comment:created', this.articleid, (this.comments.length + 1));
 
     this.commentText  = '';
 
@@ -82,10 +124,40 @@ export class CommentsPage implements OnInit {
 
   }
 
-  CommentLikeClick(Commentid, cindex) {
-    this.articleService.commentLike(Commentid).then((response: any) => {
-      this.comments[cindex].likes.length = response.count;
+  CommentLikeClick(Commentid) {
+      this.articleService.commentLike(Commentid).then((response: any) => {
+          //this.zone.run(() => {
+          //    let indexOfComment = this.getCommentindex(Commentid);
+          //    if (this.commentModelArray[indexOfComment].isLiked = true) {
+          //        this.commentModelArray[indexOfComment].isLiked = false;
+          //    }
+          //    else {
+          //        this.commentModelArray[indexOfComment].isLiked = true
+          //    }
+          //    this.commentModelArray[indexOfComment].totalLikes = response.count;
+
+          //});
+
+          console.log(response);
+
+          this.zone.run(() => {
+              let indexOfComment = this.getCommentindex(Commentid);
+              if (response.like === 'liked') {
+                  this.commentModelArray[indexOfComment].isLiked = true;
+
+              }
+              else {
+                  this.commentModelArray[indexOfComment].isLiked = false
+
+              }
+              this.commentModelArray[indexOfComment].totalLikes = response.count;
+
+
+          });
     });
+
+
+      
   }
 
   async commentActionSheet(commentid,commentindex,comment) {
@@ -97,8 +169,8 @@ export class CommentsPage implements OnInit {
         icon: 'trash',
         handler: () => {
           this.zone.run(() => {
-            this.articleService.DeleteuserComment(commentid).then((response: any) => {
-              this.comments.splice(commentindex, 1);
+              this.articleService.DeleteuserComment(commentid).then((response: any) => {
+                  this.commentModelArray.splice(commentindex, 1);
             });
             });
          
@@ -131,14 +203,37 @@ export class CommentsPage implements OnInit {
   }
 
   loadMoreComments(event) {
-  //  let last: any = this.comments[this.comments.length - 1];
-    let lastid= Math.min.apply(Math,this.comments.map(s => s.id));
-    console.log(lastid);
-    this.articleService.getMoreComment(this.articleid,lastid).then((response: any) => {
+      //  let last: any = this.comments[this.comments.length - 1];
+      let lastid = Math.min.apply(Math, this.commentModelArray.map(s => s.id));
+  //  console.log(lastid);
+      this.articleService.getMoreComment(this.articleid,lastid).then((response: any) => {
      // console.log(response.articles);
-      this.comments = this.comments.concat(response);
+   //   this.comments = this.comments.concat(response);
      // event.complete();
-      event.target.complete();
+
+        let tmp = response;
+        for (let i = 0; i < response.length; i++) {
+
+
+            this.commentModelArray.push({
+                id: tmp[i].id,
+                content: tmp[i].reply,
+                isLiked: (tmp[i].likes.find(x => x.user_id === this.userID)) ? true : false,
+                postedByImage: tmp[i].user.image,
+                postedOn: tmp[i].created_at,
+                postedby: tmp[i].user.name,
+                totalLikes: tmp[i].likes.length,
+                totalReplies: tmp[i].replies.length,
+                postedByGender: tmp[i].user.gender,
+                postedByid:tmp[i].user.id,
+                hasAccessToEdit: (tmp[i].user_id == this.userID || this.userType==1) ? true : false,
+            });
+
+        }
+
+
+
+        event.target.complete();
   
     });
   }
@@ -158,8 +253,8 @@ export class CommentsPage implements OnInit {
         this.dataReturned = dataReturned.data;
    
         this.zone.run(() => {
-          this.articleService.userCommentEdit(commentId,dataReturned.data).then((response:any)=>{
-            this.comments[commentindex].reply=response.reply;
+            this.articleService.userCommentEdit(commentId, dataReturned.data).then((response: any) => {
+                this.commentModelArray[commentindex].content = response.reply;
           });
           });
 
@@ -170,6 +265,11 @@ export class CommentsPage implements OnInit {
     return await modal.present();
 
   }
+    getCommentindex(id) {
+
+        let comment = this.commentModelArray.find(x => x.id === id);
+        return this.commentModelArray.indexOf(comment);
+    } 
   
 
 }

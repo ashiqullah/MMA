@@ -8,7 +8,7 @@
     <!-- [routerLink]="['/video-upload']" -->
     
 
-    <ion-button fill="clear" slot="end" (click)="presentActionSheet()"  > <ion-icon color="energized"  name='add' ></ion-icon></ion-button>
+    <ion-button fill="clear" *ngIf="hasAccesstoaddvideo"  slot="end" (click)="presentActionSheet()"  > <ion-icon color="energized"  name='add' ></ion-icon></ion-button>
     <!-- <ion-buttons slot="start">
       <ion-menu-button menu="logout" autoHide="false"></ion-menu-button>
     </ion-buttons> -->
@@ -29,10 +29,11 @@
           <ion-avatar slot="start">
               <img src="{{item.user.image?(ServerUrl+item.user.image):(item.user.gender==1?Maleimage:Femaleimage)}}">
           </ion-avatar>
-
-          <ion-label text-wrap>
+          
+          <ion-label style="margin: 2px;" text-wrap>
+            {{item.user.name}}
+              <time style="font-size: 12px;float: right;"> {{ item.created_at | timeago }}</time>
               <h3>{{ item.title }}</h3>
-              <time> {{ item.created_at }}</time>
           </ion-label>
 
           <ion-icon slot="end" name="videocam"></ion-icon>

@@ -25,7 +25,7 @@ export class VideoUploadPage implements OnInit {
     private transfer: FileTransfer, */
      private fileS: File,
     private alertCtrl: AlertController, private loadingCtrl: LoadingController, private fb: FormBuilder,
-    private castService: CastingProvider, public events: Events , public navParams: NavParams,
+    private castService: CastingProvider, public events: Events// , public navParams: NavParams,
   ) {
     this.groups = [];
     this.getGroups();
@@ -54,14 +54,14 @@ export class VideoUploadPage implements OnInit {
   }
 
  async showLoader() {
-    this.loader = await this.loadingCtrl.create({
+    return await this.loadingCtrl.create({
       message: 'Please wait...'
-    });
+    }).then(a=>{a.present();});
     this.loader.present();
   }
 
  async dismissLoader() {
-  await  this.loader.dismiss();
+  return await this.loadingCtrl.dismiss();
   }
 
 postForm() {
@@ -74,11 +74,19 @@ postForm() {
 
   this.castService.saveCast(formData).then((response: any) => {
     console.log(response);
-   // this.dismissLoader();
+    this.dismissLoader();
    this.events.publish('Video:Uploaded',true);
-  });
-  this.dismissLoader();
-    this.navCtrl.navigateBack('/tabs/tab2');
+   this.navCtrl.navigateBack('/tabs/tab2');
+
+  }).catch(err => {
+      this.dismissLoader();
+   this.events.publish('Video:Uploaded',true);
+  this.navCtrl.navigateBack('/tabs/tab2');
+
+    
+            });
+
+
 
 }
 
@@ -91,23 +99,23 @@ onFileChange(event) {
 }
 
   ngOnInit() {
-    const videourl = this.navParams.get('VideoUrl');
-    const videofilename = this.navParams.get('videofilename');
-    console.log(videourl);
-    if (videourl) {
+    // const videourl = this.navParams.get('VideoUrl');
+    // const videofilename = this.navParams.get('videofilename');
+    // console.log(videourl);
+    // if (videourl) {
 
-      try {
-      //  var dirUrl =  this.fileS.resolveDirectoryUrl(videourl);
-        //var retrievedFile =  this.fileS.getFile(dirUrl,videofilename,{});
-       // var retrievedFile =  this.file.getFile(dirUrl, filename, {});
-       // this.fileS.ge
-       //this.file = retrievedFile.nativeURL;
-      } catch(err) {
+    //   try {
+    //   //  var dirUrl =  this.fileS.resolveDirectoryUrl(videourl);
+    //     //var retrievedFile =  this.fileS.getFile(dirUrl,videofilename,{});
+    //    // var retrievedFile =  this.file.getFile(dirUrl, filename, {});
+    //    // this.fileS.ge
+    //    //this.file = retrievedFile.nativeURL;
+    //   } catch(err) {
         
-      }
+    //   }
 
-      this.file = videourl;
-    }
+    //   this.file = videourl;
+    // }
   }
 
 }

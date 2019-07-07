@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
 import { TranslateModule} from '@ngx-translate/core';
+import { TimeagoModule } from 'ngx-timeago';
+
 
 
 
@@ -24,8 +26,8 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     TranslateModule,
-   
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    TimeagoModule
   ],
   declarations: [ForumPage, EscapeHtmlPipe],
 })

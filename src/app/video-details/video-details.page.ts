@@ -45,7 +45,7 @@ export class VideoDetailsPage implements OnInit {
   //  const firstParam: string = this.route.snapshot.queryParamMap.get('videoid'); 
 
     this.ServerUrl = Service.url;
-    this.LoadedCast = [];
+    
     this.Maleimage = Service.maleImageUrl;
     this.Femaleimage = Service.femaleImageUrl;
 
@@ -87,7 +87,8 @@ export class VideoDetailsPage implements OnInit {
     });
   }
 
-  async commentActionSheet(commentid,commentindex,commentContent) {
+  async commentActionSheet(commentid,commentContent) {
+    let commentindex = this.getCommentindex(commentid);
     const actionSheet = await this.actionSheetController.create({
       header: 'Actions',
       buttons: [{
@@ -95,7 +96,7 @@ export class VideoDetailsPage implements OnInit {
         role: 'destructive',
         icon: 'trash',
         handler: () => {
-
+        
           this.castService.DeleteVideoComment(commentid).then((response: any) => {
             this.zone.run(() => {
             this.LoadedCast.comments.splice(commentindex, 1);
@@ -156,5 +157,9 @@ export class VideoDetailsPage implements OnInit {
     });
     await  prompt.present();
   }
+  getCommentindex(id){
 
+    let Comment = this.LoadedCast.comments.find(x => x.id === id);
+    return this.LoadedCast.comments.indexOf(Comment);
+   } 
 }

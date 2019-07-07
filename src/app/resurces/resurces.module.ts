@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule} from '@ngx-translate/core';
 import { ResurcesPage } from './resurces.page';
+import { TimeagoModule } from 'ngx-timeago';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     TranslateModule,
+    TimeagoModule,
     RouterModule.forChild(routes)
   ],
   declarations: [ResurcesPage]

@@ -18,7 +18,7 @@
   <ion-menu contentId="content1" menuId="logout" id="logout" side="start">
     <ion-header>
       <ion-toolbar>
-        <ion-title>Main menu</ion-title>
+        <ion-title *ngIf="user"  text-center>{{user.name}}</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
@@ -28,11 +28,22 @@
         <div style="position: absolute;top:80%;font-size: 1.0 em;color:#ffff;width: 100%;" class="card-subtitle">{{user.email}}<br>{{user.mobile}}</div>
       </ion-card>
       <ion-list>
-          <ion-item  [routerLink]="['/profile']"> Profile </ion-item>   
+         <!--  <ion-item  [routerLink]="['/profile']"> Profile </ion-item>   
                <ion-item [routerLink]="['/configuration']">Settings</ion-item>
-               <!-- <ion-button fill="clear" slot="end" [routerLink]="['/configuration']"><ion-icon color="energized"  name='cog' ></ion-icon></ion-button> -->
-        <ion-item [routerLink]="['/changepassword']">Change Password</ion-item>
-        <ion-item (click)="logout()">Logout</ion-item>
+        <ion-item [routerLink]="['/changepassword']">Change Password</ion-item> -->
+        <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
+          <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
+            <ion-icon slot="start" [name]="p.icon"></ion-icon>
+            <ion-label>
+              {{p.title}}
+            </ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+       
+        <ion-item (click)="logout()"><ion-icon slot="start" name="log-out"></ion-icon>
+          <ion-label>
+           logout
+          </ion-label></ion-item>
 
 
       </ion-list>

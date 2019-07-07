@@ -30,7 +30,7 @@
           <ion-img src="{{resouce.image?(ServerUrl+resouce.image):(ServerUrl+nullresouceimage)}}"></ion-img>
 
           <ion-card-header>
-            <ion-card-subtitle>Posted By: {{resouce.name}} at {{resouce.created_at}}</ion-card-subtitle>
+            <ion-card-subtitle>Posted By: {{resouce.name}}  {{resouce.created_at | timeago}}</ion-card-subtitle>
           </ion-card-header>
           <ion-card-content>
             <!-- <p *ngIf="currenlanguage=='da'">

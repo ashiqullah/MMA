@@ -1,6 +1,7 @@
 import { Component, OnInit ,NgZone} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 import { homeProvider } from '../providers/Home/home';
 import { NavController, Events, AlertController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
@@ -8,6 +9,7 @@ import { UploadAdapter} from '../providers/uploadAdapter/UploadAdapter';
 import { Storage } from '@ionic/storage';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { UserProvider } from '../providers/user/user';
 
 @Component({
   selector: 'app-new-news',
@@ -19,9 +21,24 @@ export class NewNewsPage implements OnInit {
   catagories: any[];
   contacts: any[];
   editOrSave: boolean = false;
+  isAdmin: boolean = false;
+
 
   
-    constructor(private fb: FormBuilder, private homeservice: homeProvider, public navCtrl: NavController, public events: Events, private alertCtlr: AlertController, private http: HttpClient , public storage: Storage,   private route: ActivatedRoute, private router: Router,  public translate: TranslateService,   private zone: NgZone) { 
+    constructor(
+        private fb: FormBuilder,
+        private homeservice: homeProvider,
+        public navCtrl: NavController,
+        public events: Events,
+        private alertCtlr: AlertController,
+        private http: HttpClient ,
+        public storage: Storage, 
+        private route: ActivatedRoute,
+        private router: Router, 
+        public translate: TranslateService, 
+        private zone: NgZone,
+        private userService: UserProvider,
+                  ) { 
       this.form.value.title = 'test here';
 
     }
@@ -33,16 +50,21 @@ export class NewNewsPage implements OnInit {
     category: ['', Validators.required],
     typeID: ['', Validators.required],
    // ExpairyDate: ['', Validators.required],
-    group: ['', Validators.required],
+    group: [''],
     file: [null],
-    status: ['', Validators.required],
+    status: [''],
 
 });
 
   ngOnInit() {
+    this.userService.getUserPermissions().then((response: any) => {
+      this.isAdmin = (response[1].user_type == 1) ? true : false;
+     });
+
     this.homeservice.getCategories().then((response: any) => {
-      this.catagories = response.Contactgroups;
-      this.contacts = response.Coalition;
+      this.catagories = response.Coalition;
+      this.contacts = response.Contactgroups;
+      console.log(response);
         
     });
     
@@ -67,6 +89,7 @@ export class NewNewsPage implements OnInit {
       this.form.get('title').setValue(response.en_title);
       //  this.form.get('category').setValue(response.name);
       this.form.get('description').setValue(response.en_content); 
+     
       this.form.controls.typeID.setValue(response.type);
       this.form.controls.category.setValue(response.category_id);
      // this.form.get('category').setValue(response.notify_groups);
@@ -96,14 +119,25 @@ export class NewNewsPage implements OnInit {
 
       formData.append('category', this.form.value.category);
       formData.append('type', this.form.value.typeID);
-      formData.append('status', '0');
+      if(!this.isAdmin)
+      {
+        formData.append('status', '0');
+      }
+      else{
+      formData.append('type', this.form.value.status);
+      }
       this.homeservice.addnews(formData).then((response: any) => {
         console.log(response);
        // this.dismissLoader();
+        this.events.publish('reloadHomepage');
+        this.navCtrl.pop();
+ 
+      }).catch((err: any) => {
+        this.events.publish('reloadHomepage');
+        this.navCtrl.pop();
+        
       });
-      this.events.publish('reloadHomepage');
-      this.navCtrl.pop();
-
+     
     }
     editform() {
       //  this.showLoader();
@@ -135,8 +169,8 @@ export class NewNewsPage implements OnInit {
     
           
                   });
-        this.events.publish('reloadHomepage');
-        this.navCtrl.pop();
+       /*  this.events.publish('reloadHomepage');
+        this.navCtrl.pop(); */
   
       }
   onFileChange(event) {

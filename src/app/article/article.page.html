@@ -23,7 +23,7 @@
           <img src="{{artical.user.image!=null?(ServerUrl+artical.user.image):(artical.user.gender==1?maleimage:femaleimage)}}">
         </ion-avatar>
         <ion-label>{{artical.user.name}}
-         <p style="font-size: 12px;" text-left>{{artical.created_at | timeAgo}}</p></ion-label>
+         <p style="font-size: 12px;" text-left>{{artical.created_at | timeago }}</p></ion-label>
          <ion-buttons fill="clear"  left>
             <ion-button ion-button fill="clear">
               <ion-icon color="dark" name="more"></ion-icon>
@@ -86,7 +86,7 @@
               <img src="{{comment.user.image!=null?(ServerUrl+comment.user.image):(comment.user.gender==1?maleimage:femaleimage)}}">
             </ion-avatar>
             <ion-label>{{comment.user.name}}
-                <p style="font-size: 12px;" text-left>{{comment.created_at | timeAgo}}</p></ion-label>          
+                <p style="font-size: 12px;" text-left>{{comment.created_at | timeago}}</p></ion-label>          
 
 
             <ion-buttons fill="clear" right>
@@ -133,7 +133,7 @@
                          
                         </ion-avatar>
                         <ion-label>{{commentreplies.user.name}}
-                            <p style="font-size: 12px;" text-left>{{commentreplies.reply_date | timeAgo}}</p></ion-label>          
+                            <p style="font-size: 12px;" text-left>{{commentreplies.reply_date | timeago}}</p></ion-label>          
             
             
                         <ion-buttons fill="clear" right>

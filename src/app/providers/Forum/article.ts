@@ -94,6 +94,15 @@ export class ArticleProvider {
     });
     return this.http.get(`${Service.apiUrl}/forum/category/${catagoryid}`, { headers }).toPromise();
   }
+
+  async deleteForum(forumid:number)
+  {
+    let auth: any = await this.storage.get('auth');
+    let headers: HttpHeaders = new HttpHeaders({
+      'Authorization': `Bearer ${auth.access_token}`,
+    });
+    return this.http.get(`${Service.apiUrl}/deleteforum/${forumid}`, { headers }).toPromise();
+  }
   async allgatacories()
   {
     let auth: any = await this.storage.get('auth');

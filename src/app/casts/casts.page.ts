@@ -25,6 +25,9 @@ export class CastsPage implements OnInit {
     Maleimage: string;
     Femaleimage: string;
   public thumbnailData: string[];
+  hasAccesstoaddvideo: boolean = false;
+  userID: any;
+  userType: any;
 
   constructor(
     // public navParams: NavParams,
@@ -64,6 +67,12 @@ export class CastsPage implements OnInit {
    }
 
   ngOnInit() {
+    this.userService.getUserPermissions().then((response: any) => {
+      console.log(response);
+      this.userID=response[1].id;
+      this.userType=response[1].user_type;
+      this.hasAccesstoaddvideo=(response[0].admin_add_casts==1 || response[1].user_type==1)?true:false;
+     });
    
     this.GetVideos();
   }
@@ -153,6 +162,7 @@ filterItems(searchTerm) {
   });
   
 }
+
 
 
 

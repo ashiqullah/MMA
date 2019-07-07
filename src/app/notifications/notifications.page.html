@@ -24,7 +24,7 @@
         <ion-label text-wrap>
             <h3>{{ item.username }}</h3>
             <p style="font-size: 12px;">{{item.message}} </p>
-            <ion-note item-right>{{item.created_at}}</ion-note>
+            <ion-note item-right>{{item.created_at | timeago}}</ion-note>
         </ion-label>
 
     </ion-item>

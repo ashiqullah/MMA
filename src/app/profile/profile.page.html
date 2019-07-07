@@ -1,9 +1,9 @@
 <ion-header>
   <ion-toolbar>
-      <ion-buttons slot="start">
-          <ion-back-button></ion-back-button>
-          </ion-buttons>
-    <ion-title>profile</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+      </ion-buttons>
+<ion-title text-center><h4>Profile</h4></ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -12,19 +12,19 @@
 
         <ion-item>
             <ion-label position="floating">Name</ion-label>
-          <ion-input    formControlName="name"></ion-input>
+          <ion-input  disabled  formControlName="name"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label position="floating">Last Name</ion-label>
-          <ion-input    formControlName="last_name"></ion-input>
+          <ion-input  disabled  formControlName="last_name"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label position="floating">Email</ion-label>
-          <ion-input    formControlName="email"></ion-input>
+          <ion-input   disabled formControlName="email"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label position="floating">Contact No</ion-label>
-          <ion-input    formControlName="mobile"></ion-input>
+          <ion-input  disabled  formControlName="mobile"></ion-input>
         </ion-item>
         <ion-item>
             <img src="{{user.image?(ServerUrl+user.image):(user.gender==1?Maleimage:Femaleimage)}}" padding >
@@ -35,7 +35,7 @@
         </ion-item>
        
         <ion-button  expand="block" box-shadow (click)="postForm()" [disabled]="!form.valid" >
-          Submit
+          change Image
         </ion-button>
       </form>
 

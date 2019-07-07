@@ -38,6 +38,17 @@ export class UserProvider {
       return this.userInfo;
     });
   }
+  getUserPermissions() {
+   return Promise.all([this.storage.get("Permissions"), this.storage.get("UserDetails")]).then(values => {  
+      return values;
+});
+
+
+
+    /* return this.storage.get('Permissions').then(value => {
+      return value;
+    }); */
+  }
   removeUserInfo() {
     this.storage.remove('UserDetails');
   }
@@ -55,5 +66,16 @@ export class UserProvider {
   removeUserLanguage() {
     this.storage.remove('lang');
   }
+  async getuserpermission()
+  {
+    let auth: any = await this.storage.get('auth');
+    let headers: HttpHeaders = new HttpHeaders({
+      'Authorization': `Bearer ${auth.access_token}`,
+    });
+    return this.http.get(`${Service.apiUrl}/user/getUserPermission`, { headers }).toPromise();
+  }
+  storePermission(response: any) {
 
+    this.storage.set('Permissions', response);
+  }
 }

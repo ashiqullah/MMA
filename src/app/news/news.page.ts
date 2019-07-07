@@ -14,6 +14,8 @@ export class NewsPage implements OnInit {
   art: any;
   currenlanguage;
   ServerUrl: string;
+  Newsimage: string;
+  Eventimage: string;
   constructor(private route: ActivatedRoute,private homeservice: homeProvider,  public translate: TranslateService,) { 
     this.currenlanguage=this.translate.currentLang;
     if(this.translate.currentLang=='fa')
@@ -21,6 +23,8 @@ export class NewsPage implements OnInit {
       this.currenlanguage='da';
     }
     this.ServerUrl = Service.url;
+    this.Newsimage=Service.newsImageUrl;
+    this.Eventimage=Service.eventImageUrl;
    
   }
 

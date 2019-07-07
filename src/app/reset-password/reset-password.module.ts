@@ -1,18 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule} from '@ngx-translate/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TimeagoModule } from 'ngx-timeago';
 
 import { IonicModule } from '@ionic/angular';
 
-import { CastsPage } from './casts.page';
+import { ResetPasswordPage } from './reset-password.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: CastsPage
+    component: ResetPasswordPage
   }
 ];
 
@@ -21,10 +19,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    TranslateModule,
-    TimeagoModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [CastsPage]
+  declarations: [ResetPasswordPage]
 })
-export class CastsPageModule {}
+export class ResetPasswordPageModule {}

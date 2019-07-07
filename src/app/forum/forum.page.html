@@ -31,7 +31,7 @@
     <ion-spinner *ngIf="loading"></ion-spinner>
   </div>
   <ion-list>
-    <ion-card *ngFor="let item of Articals; let i = index">
+   <!--  <ion-card *ngFor="let item of Articals; let i = index">
       <ion-item *ngIf="item" >          
         <ion-avatar (click)="presentModal(item.user_id)"  slot="start">
           <img src="{{item.user.image?(ServerUrl+item.user.image):(item.user.gender==1?Maleimage:Femaleimage)}}">
@@ -109,61 +109,128 @@
        </div>
       
      </div> 
-    </ion-card>
+    </ion-card> -->
 
 
 
 
 
 
-   <!--  <ion-card *ngFor="let item of ArticleModelArray; let i = index">
-      <ion-item *ngIf="item" >          
-        <ion-avatar (click)="presentModal(item.id)"  slot="start">
-          <img src="{{item.postedByImage?(ServerUrl+item.postedByImage):(item.postedByGender==1?Maleimage:Femaleimage)}}">
-        </ion-avatar>
-        <ion-label>{{item.postedby}}
-         <p style="font-size: 12px;" text-left>{{item.postedOn}}</p></ion-label>
-         <ion-buttons fill="clear" *ngIf="item.postedby==userID || userType==1"  left>
-            <ion-button ion-button fill="clear" (click)="presentActionSheet(item.id,i,item.content,item.title)"  icon-only >
-              <ion-icon color="dark" name="more"></ion-icon>
-            </ion-button>
-          </ion-buttons>        
-      </ion-item>
-      <ion-card-content>
-          <p color="primary" class="forumtitle" >{{item.title}} : </p><br>
-        <div class="articlecontent" [innerHTML]="item.content|keepHtml"></div>
-      </ion-card-content>
-    <ion-grid>
-        <ion-row no-padding>
-            <ion-col no-padding>
-                <ion-button no-padding (click)="LikeCliked(item.id,i)" class="upperrow" color="primary"  class="lowercase" fill="clear" size="small" expand='block'>
-           
-            {{item.totalLikes}}  <ion-icon name='thumbs-up'></ion-icon>
-                </ion-button>
-            </ion-col>
-            <ion-col no-padding>
-                <ion-button no-padding class="upperrow" (click)="commentPost(item.id)"  color="primary"  class="lowercase"  fill="clear" size="small" expand='block'>
-           
-             {{item.totalComments}}  <ion-icon name='text'></ion-icon>
-             </ion-button>
+      <ion-card *ngFor="let item of ArticleModelArray; let i = index">
+          <ion-item *ngIf="item">
+              <ion-avatar (click)="presentModal(item.postedByid)" slot="start">
+                  <img src="{{item.postedByImage?(ServerUrl+item.postedByImage):(item.postedByGender==1?Maleimage:Femaleimage)}}">
+              </ion-avatar>
+              <ion-label>
+                  {{item.postedby}}
+                  <p style="font-size: 12px;" text-left>{{item.postedOn | timeago}}</p>
+              </ion-label>
+              <ion-buttons fill="clear" *ngIf="item.hasAccessToEdit"   left>
+                  <ion-button ion-button fill="clear" (click)="presentActionSheet(item.id,i,item.content,item.title)" icon-only>
+                      <ion-icon color="dark" name="more"></ion-icon>
+                  </ion-button>
+              </ion-buttons>
+          </ion-item>
+          <ion-card-content>
+              <p color="primary" text-center class="forumtitle">{{item.title}}  </p><br>
+              <div class="articlecontent" text-center [innerHTML]="item.content|keepHtml"></div>
+          </ion-card-content>
+          <ion-item-divider style="min-height: 5px;"></ion-item-divider>
 
-              
-            </ion-col>
-            <ion-col no-padding>        
-                <ion-button no-padding  class="upperrow" color="primary"  class="lowercase"  fill="clear" size="small" expand='block'>
-           
-                {{item.totalReplies}}  <ion-icon name='repeat'></ion-icon>
-                </ion-button>
-            </ion-col>
-          </ion-row>
-        <ion-row no-padding *ngIf="!checkIfLiked(userID,item.likes)">
-            
+          <ion-grid>
+            <ion-row no-padding>
+                <ion-col no-padding>
+                    <ion-button no-padding   class="lowercase" color="primary" fill="clear" size="small" expand='block'>
+                        {{item.totalLikes}}  <ion-icon name='thumbs-up'></ion-icon>
+                    </ion-button>
+                   
+                </ion-col>
+                <ion-col no-padding>
+                    <ion-button no-padding class="lowercase"  color="primary" fill="clear" size="small" expand='block'>
+
+                        {{item.totalComments}}  <ion-icon name='text'></ion-icon>
+                    </ion-button>
+
+                </ion-col>
+                <ion-col no-padding>
+                    <ion-button no-padding class="lowercase" color="primary" fill="clear" size="small" expand='block'>
+
+                        {{item.totalReplies}}  <ion-icon name='repeat'></ion-icon>
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+            <!--<ion-row no-padding *ngIf="!checkIfLiked(userID,item.likes)">
+
+          <ion-col no-padding >
+              <ion-button no-padding color="danger" class="lowercase" (click)="LikeCliked(item.id,i)" fill="clear" size="small" expand='block'>
+                  <ion-icon color="energized" isActive="false" name='thumbs-up'></ion-icon>
+                  {{ 'LIKES' | translate }}
+              </ion-button>
+
+          </ion-col>
+          <ion-col no-padding>
+              <ion-button no-padding fill="clear" color="primary" class="lowercase" (click)="commentPost(item.id)" size="small" expand='block'>
+                  <ion-icon name='text'></ion-icon>
+                  {{ 'COMMENTS' | translate }}
+              </ion-button>
+          </ion-col>
+          <ion-col no-padding>
+              <ion-button no-padding fill="clear" class="lowercase" color="primary" size="small" expand='block'>
+                  <ion-icon name='repeat'></ion-icon>
+                  {{ 'REPLIES' | translate }}
+              </ion-button>
+          </ion-col>
+      </ion-row>-->
+        </ion-grid>
+
+
+          <ion-item-divider style="min-height: 5px;"></ion-item-divider>
+          <ion-grid>
+              <ion-row no-padding>
+                  <ion-col no-padding>
+                    <ion-button  *ngIf="!item.isLiked" color="primary"  class="lowercase" (click)="LikeCliked(item.id)" fill="clear" size="small" expand='block'>
+                      <ion-icon color="energized"  name='thumbs-up' ></ion-icon>
+                      {{ 'LIKE' | translate }}
+                    </ion-button>
+                      <!-- <ion-button no-padding *ngIf="item.isLiked" [style.color]="'#042154'" (click)="LikeCliked(item.id)" class="lowercase"  fill="clear"  size="small" expand='block'>
+                        {{ 'LIKES' | translate }}  <ion-icon name='thumbs-up'  ></ion-icon>
+                      </ion-button> -->
+                      <ion-button  *ngIf="item.isLiked" [style.color]="'#042154'"  class="lowercase" (click)="LikeCliked(item.id)" fill="clear" size="small" expand='block'>
+                        <ion-icon color="energized"  name='thumbs-up' ></ion-icon>
+                        {{ 'LIKE' | translate }}
+                      </ion-button>
+
+                  </ion-col>
+                  <ion-col no-padding>
+                    <!--   <ion-button no-padding class="lowercase" (click)="commentPost(item.id)" color="primary" fill="clear" size="small" expand='block'>
+
+                          {{item.totalComments}}  <ion-icon name='text'></ion-icon>
+                      </ion-button> -->
+                      <ion-button no-padding fill="clear" color="primary" class="lowercase" (click)="commentPost(item.id)" size="small" expand='block'>
+                        <ion-icon name='text'></ion-icon>
+                        {{ 'COMMENT' | translate }}
+                    </ion-button>
+
+                  </ion-col>
+                  <ion-col no-padding>
+                  <!--     <ion-button no-padding class="lowercase" color="primary" fill="clear" size="small" expand='block'>
+
+                          {{item.totalReplies}}  <ion-icon name='repeat'></ion-icon>
+                      </ion-button> -->
+                      <ion-button no-padding fill="clear" class="lowercase" color="primary" size="small" expand='block'>
+                        <ion-icon name='repeat'></ion-icon>
+                        {{ 'REPLY' | translate }}
+                    </ion-button>
+                  </ion-col>
+              </ion-row>
+              <!--<ion-row no-padding *ngIf="!checkIfLiked(userID,item.likes)">
+
             <ion-col no-padding >
                 <ion-button no-padding color="danger" class="lowercase" (click)="LikeCliked(item.id,i)" fill="clear" size="small" expand='block'>
                     <ion-icon color="energized" isActive="false" name='thumbs-up'></ion-icon>
                     {{ 'LIKES' | translate }}
                 </ion-button>
-               
+
             </ion-col>
             <ion-col no-padding>
                 <ion-button no-padding fill="clear" color="primary" class="lowercase" (click)="commentPost(item.id)" size="small" expand='block'>
@@ -177,31 +244,31 @@
                     {{ 'REPLIES' | translate }}
                 </ion-button>
             </ion-col>
-        </ion-row>
-    </ion-grid>  
-     <ion-item-divider style="min-height: 5px;"></ion-item-divider>
-    <div (click)="commentPost(item.id)" *ngFor="let cmt of item.comments;let first=first;let last=last;">
-      
-       <div *ngIf="first">
-         <ion-item style="margin-left: 30px;">
-          <ion-avatar   slot="start">
-              <img src="{{cmt.user.image?(ServerUrl+cmt.user.image):(cmt.user.gender==1?Maleimage:Femaleimage)}}">
-            </ion-avatar>
-            <ion-label>{{cmt.user.name}}
-           
-             <div  class="ion-no-padding ion-text-wrap"  style="font-size: 12px; color: rgb(24, 24, 27);" [innerHTML]="cmt.reply"></div></ion-label>
-            </ion-item>
-       </div>
-      
-     </div>  
-    </ion-card>-->
+        </ion-row>-->
+          </ion-grid>
+          <ion-item-divider style="min-height: 5px;"></ion-item-divider>
+          <!--   <div (click)="commentPost(item.id)" *ngFor="let cmt of item.comments;let first=first;let last=last;">
+
+         <div *ngIf="first">
+           <ion-item style="margin-left: 30px;">
+            <ion-avatar   slot="start">
+                <img src="{{cmt.user.image?(ServerUrl+cmt.user.image):(cmt.user.gender==1?Maleimage:Femaleimage)}}">
+              </ion-avatar>
+              <ion-label>{{cmt.user.name}}
+
+               <div  class="ion-no-padding ion-text-wrap"  style="font-size: 12px; color: rgb(24, 24, 27);" [innerHTML]="cmt.reply"></div></ion-label>
+              </ion-item>
+         </div>
+
+       </div>  -->
+      </ion-card>
 
 
 
 
-
+    <!-- *ngIf="Articals && Articals.length" -->
   </ion-list> 
-  <ion-infinite-scroll *ngIf="Articals && Articals.length" (ionInfinite)="loadMoreArticles($event)">
+  <ion-infinite-scroll *ngIf="ArticleModelArray && ArticleModelArray.length"  (ionInfinite)="loadMoreArticles($event)">
     <ion-infinite-scroll-content loadingText="Loading more posts..."></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

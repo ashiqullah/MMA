@@ -17,7 +17,7 @@
         </ion-item>
         <!-- <ion-item style="margin-top:10px;margin-bottom:10px;"> -->
           <!-- <ion-textarea row="10" type="string" formControlName="description" placeholder="Description"></ion-textarea> -->
-          <ckeditor [editor]="Editor" formControlName="description" [config]="{ toolbar: ['|', 'bold', 'italic','bulletedList', 'numberedList','imageUpload'] }"  (ready)="onReady($event)"></ckeditor>
+          <ckeditor [editor]="Editor" formControlName="description" [config]="{ toolbar: ['|', 'bold', 'italic','bulletedList','Alignment', 'numberedList','imageUpload'] }"  (ready)="onReady($event)"></ckeditor>
        <!--    <ion-item>
           <ion-textarea formControlName="description"></ion-textarea>
           </ion-item> -->
@@ -35,7 +35,7 @@
               </ion-item>
 
        
-          <ion-item>
+          <ion-item *ngIf="isAdmin">
               <ion-label>Status</ion-label>
              
                   <ion-select text-center placeholder=" Status " formControlName="status">
@@ -49,15 +49,15 @@
             <ion-item>
                 <ion-label> Category</ion-label>
                 <ion-select  formControlName="category"  placeholder=" Category " >
-                    <ion-select-option   *ngFor="let item of catagories" [value]="item.id">{{item.en_name}}</ion-select-option>
+                    <ion-select-option style="font-size:12px"  *ngFor="let item of catagories" [value]="item.id">{{item.en_title}}</ion-select-option>
                   </ion-select>
               </ion-item>
            
 
-            <ion-item>
+            <ion-item *ngIf="!editOrSave">
                 <ion-label>Contact Group</ion-label>
                 <ion-select  text-center formControlName="group"  placeholder="Contact Group" >
-                    <ion-select-option   *ngFor="let item of contacts" [value]="item.id">{{item.en_title}}</ion-select-option>
+                    <ion-select-option  style="font-size:12px" *ngFor="let item of contacts" [value]="item.id">{{item.en_name}}</ion-select-option>
                   </ion-select>
               </ion-item>
         

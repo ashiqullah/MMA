@@ -21,12 +21,17 @@ export class HomePage implements OnInit {
   Newsimage: string;
   Eventimage: string;
   mode: string = 'card';
+  userID: any;
+  userType: any;
 
   currenlanguage;
   loading: boolean = false;
+  hasAccesstoaddNews: boolean = false;
   slideOpt = {
     loop: true,
-    autoplay:true
+    autoplay:true,
+    initialSlide: 1,
+    speed: 400
   };
 
   constructor(
@@ -72,6 +77,8 @@ export class HomePage implements OnInit {
       this.currenlanguage='da';
     }
 
+   
+
   }
 
   listenEvents(){
@@ -88,10 +95,16 @@ export class HomePage implements OnInit {
   ngOnInit() {
 
     this.loading = true;
-    this.userService.getUserInfo().then((response: any) => {
+   /*  this.userService.getUserInfo().then((response: any) => {
       console.log(response);
       this.userService.storeUserInfo({id: response.id, name: response.name, user_type: response.user_type});
-    });
+    }); */
+    this.userService.getUserPermissions().then((response: any) => {
+      console.log(response);
+      this.userID=response[1].id;
+      this.userType=response[1].user_type;
+      this.hasAccesstoaddNews=(response[0].admin_add_news==1 || response[1].user_type==1)?true:false;
+     });
 
     this.homeservice.getSlider(this.currenlanguage).then((repsonse: any) => {
 

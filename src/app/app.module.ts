@@ -31,7 +31,10 @@ import { CoalitionsPageModule } from '../app/coalitions/coalitions.module';
 import { CoalitionDetailsPageModule } from '../app/coalition-details/coalition-details.module';
 import { CoalitionDeputiesPageModule } from '../app/coalition-deputies/coalition-deputies.module';
 import {ChangepasswordPageModule} from '../app/changepassword/changepassword.module';
+import {ResetPasswordPageModule} from '../app/reset-password/reset-password.module';
 
+//import {TimeAgoPipe} from 'time-ago-pipe';
+import { TimeagoModule } from 'ngx-timeago';
 
 
 import { IonicModule, IonicRouteStrategy, NavParams } from '@ionic/angular';
@@ -41,7 +44,7 @@ import {  HttpClient } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { pipe } from 'rxjs';
+import { pipe, from } from 'rxjs';
 import { TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import { TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {LanguageService} from '../app/providers/language/language.service';
@@ -84,7 +87,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
     }
 // tslint:disable-next-line: max-line-length
-  }), IonicStorageModule.forRoot(), IonicModule.forRoot(), AppRoutingModule, HttpClientModule, UserProfilePageModule, CommentsPageModule, RepliesPageModule, EditmodalPageModule, ArticlePageModule, CKEditorModule, MRichEditorPageModule, VideoUploadPageModule, ResurcesPageModule, CoalitionsPageModule,CoalitionDetailsPageModule,CoalitionDeputiesPageModule,ChangepasswordPageModule],
+  }), IonicStorageModule.forRoot(), IonicModule.forRoot(), AppRoutingModule, HttpClientModule, UserProfilePageModule, CommentsPageModule, RepliesPageModule, EditmodalPageModule, ArticlePageModule, CKEditorModule, MRichEditorPageModule, VideoUploadPageModule, ResurcesPageModule, CoalitionsPageModule,CoalitionDetailsPageModule,CoalitionDeputiesPageModule,ChangepasswordPageModule,ResetPasswordPageModule,TimeagoModule.forRoot()],
   providers: [
     StatusBar,
     SplashScreen,

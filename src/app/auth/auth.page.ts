@@ -100,13 +100,14 @@ export class AuthPage implements OnInit {
         .then((response: any) => {
           
           this.authService.storeCredentials(response);
+          this.events.publish('user:get');
 
           this.dismissLoader();
 
           setTimeout(() => {
             this.checkAuthenticated();
-            this.events.publish('user:get');
-            this.events.publish('notification:get');
+          //  this.events.publish('user:get');
+           // this.events.publish('notification:get');
           }, 750);
         })
         .catch(err => {
@@ -121,10 +122,10 @@ if ( err.status === 400 ) {
             alertmessage = `${err.error.message}`;
 
           } else {
-            alertmessage = 'Unknow error on login';
+            alertmessage = err;
           }
           this.showAlert('Error', alertmessage );
-          this.dismissLoader();
+         // this.dismissLoader();
 
         });
     }
@@ -171,4 +172,5 @@ if ( err.status === 400 ) {
     alert.present();
   }
 
+ 
 }

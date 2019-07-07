@@ -13,14 +13,14 @@
 
     <ion-title>{{ 'HOMEPAGE' | translate }}</ion-title>
   
-    <ion-button fill="clear"  slot="end" [routerLink]="['/new-news']"  [queryParams]="{categaryid:catagory,catagoryName:'title'}"><ion-icon color="energized"  name='add' ></ion-icon></ion-button>
+    <ion-button fill="clear" *ngIf="hasAccesstoaddNews"  slot="end" [routerLink]="['/new-news']"  [queryParams]="{categaryid:catagory,catagoryName:'title'}"><ion-icon color="energized"  name='add' ></ion-icon></ion-button>
 
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <ion-card>
-        <ion-slides [options]="slideOpt" pager="true" >
+    <!-- <ion-card> -->
+        <ion-slides [options]="slideOpt" pager="true"  style="margin-top: 10px" >
           <ion-slide *ngFor="let item of sliderdata; let i = index">
             <div>
       <img src="{{ServerUrl+'slideshow/'+item.path}}">
@@ -32,7 +32,7 @@
       </div>
           </ion-slide>
         </ion-slides>
-      </ion-card>
+      <!-- </ion-card> -->
     <ion-segment [(ngModel)]="segment" color="inverse">
         <ion-segment-button value="News">
           {{ 'NEWS' | translate }}
@@ -45,14 +45,14 @@
       <div [ngSwitch]="segment">
       <div *ngSwitchCase="'News'" class="form">
           <ion-list>
-            
               <div *ngFor="let article of news; let i = index">
+                <div *ngIf="(userType==1) || article.status==1">
          
          
                   <ion-card *ngIf="article.type=='News'" >
                       <ion-img src="{{article.image?(ServerUrl+article.image):(Newsimage)}}"></ion-img>
                       <ion-card-header>
-                        <ion-card-subtitle>Posted By: {{article.username}} at {{article.created_at}}</ion-card-subtitle>
+                        <ion-card-subtitle>Posted By: {{article.username}}  {{article.created_at | timeago }}</ion-card-subtitle>
                       </ion-card-header>
                       <ion-card-content>
                         <p *ngIf="currenlanguage=='da'">
@@ -73,21 +73,21 @@
                             </ion-col>
                               <ion-col text-right no-padding>
                                 
-                            <ion-badge *ngIf="article.status==0" color="danger">Unpulished</ion-badge>
-                            <ion-badge  *ngIf="article.status==1" color="primary">pulished</ion-badge>
+                            <ion-badge  *ngIf="(article.status==0) && (userType==1)" color="danger">Unpulished</ion-badge>
+                            <ion-badge  *ngIf="(article.status==1) && (userType==1)" color="primary">pulished</ion-badge>
 
                                 </ion-col>
                           </ion-row>
                         <ion-row no-padding>
                             <ion-col no-padding>
-                              <ion-button class="lowercase" fill="outline" size="small" (click)="detail(article)" >{{ 'READMORE' | translate }}</ion-button>
+                              <ion-button class="lowercase"  fill="outline" size="small" (click)="detail(article)" >{{ 'READMORE' | translate }}</ion-button>
 
                             </ion-col>
                             <ion-col text-right no-padding>
 <!--                               <ion-button *ngIf="article.status==0" (click)="pulished(false,article.id,i)" > <ion-badge  color="danger">Unpulished</ion-badge></ion-button> 
                          <ion-button *ngIf="article.status==1" (click)="pulished(true,i)" ><ion-badge  color="primary">pulished</ion-badge></ion-button> 
                    -->
-    <ion-button  class="lowercase" fill="outline"  size="small"  [routerLink]="['/new-news']"  [queryParams]="{Newsid:article.id}">    Edit     </ion-button>
+    <ion-button  class="lowercase" fill="outline" *ngIf="(article.user_id==userID && article.status==0) || (userType==1)"  size="small"  [routerLink]="['/new-news']"  [queryParams]="{Newsid:article.id}">    Edit     </ion-button>
                 
                               
                             </ion-col>
@@ -99,6 +99,8 @@
                     </ion-card>
    
                    </div>
+                  </div>
+
              
            </ion-list>
         </div>
@@ -107,7 +109,7 @@
             
                 <div *ngFor="let article of news">
            
-           
+           <div *ngIf="(userType==1) || article.status==1">
                     <ion-card *ngIf="article.type=='Event'">
                         <ion-img src="{{article.image?(ServerUrl+article.image):(Eventimage)}}"></ion-img>
                         <ion-card-header>
@@ -130,9 +132,9 @@
                                     </ion-col>
                                       <ion-col text-right no-padding>
                                         
-                                    <ion-badge *ngIf="article.status==0" color="danger">Unpulished</ion-badge>
-                                    <ion-badge  *ngIf="article.status==1" color="primary">pulished</ion-badge>
-        
+                                        <ion-badge  *ngIf="(article.status==0) && (userType==1)" color="danger">Unpulished</ion-badge>
+                                        <ion-badge  *ngIf="(article.status==1) && (userType==1)" color="primary">pulished</ion-badge>
+            
                                         </ion-col>
                                   </ion-row>
                                 <ion-row no-padding>
@@ -144,7 +146,9 @@
         <!--                               <ion-button *ngIf="article.status==0" (click)="pulished(false,article.id,i)" > <ion-badge  color="danger">Unpulished</ion-badge></ion-button> 
                                  <ion-button *ngIf="article.status==1" (click)="pulished(true,i)" ><ion-badge  color="primary">pulished</ion-badge></ion-button> 
                            -->
-            <ion-button  class="lowercase" fill="outline"  size="small"  [routerLink]="['/new-news']"  [queryParams]="{Newsid:article.id}">    Edit     </ion-button>
+
+                           
+            <ion-button  class="lowercase" fill="outline" *ngIf="(article.user_id==userID && article.status==0) || (userType==1)"  size="small"  [routerLink]="['/new-news']"  [queryParams]="{Newsid:article.id}">    Edit     </ion-button>
                         
                                       
                                     </ion-col>
@@ -154,7 +158,7 @@
                                   </ion-grid>
                         </ion-card-content>
                       </ion-card>
-     
+                    </div>
                      </div>
                
              </ion-list>
